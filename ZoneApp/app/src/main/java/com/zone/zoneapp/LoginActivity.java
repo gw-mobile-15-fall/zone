@@ -82,6 +82,25 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+        mForgetButton = (Button)findViewById(R.id.forget_password_Button);
+        mForgetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, FindPasswordActivity.class);
+                startActivity(i);
+            }
+        });
+
+        mCreateButton = (Button)findViewById(R.id.create_account_Button);
+        mCreateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 

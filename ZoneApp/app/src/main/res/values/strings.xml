@@ -19,4 +19,7 @@
     <string name="update_password_label">Password</string>
     <string name="update_re_password_label">Re-Enter Password</string>
     <string name="submit_update_label">Update</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_find_password">FindPasswordActivity</string>
+    <string name="find_password_label">Find Password !</string>
 </resources>

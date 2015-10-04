@@ -2,7 +2,7 @@
     <string name="app_name">ZoneApp</string>
     <string name="action_settings">Settings</string>
     <string name="welcome_title">Welcome to Zone !</string>
-    <string name="username_hint">User Name</string>
+    <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="sign_in_label">Sign In</string>
     <string name="forget_password_label">Forget Password</string>
@@ -12,4 +12,11 @@
     <string name="nearby_request_button_label">Nearby Request</string>
     <string name="request_history_label">Request History</string>
     <string name="edit_profile_button_label">Edit Profile</string>
+    <string name="title_activity_create_request">CreateRequestActivity</string>
+    <string name="title_activity_update_profile">UpdateProfileActivity</string>
+    <string name="update_username_label">Username</string>
+    <string name="update_email_label">Email Address</string>
+    <string name="update_password_label">Password</string>
+    <string name="update_re_password_label">Re-Enter Password</string>
+    <string name="submit_update_label">Update</string>
 </resources>

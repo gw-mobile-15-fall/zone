@@ -15,12 +15,12 @@
         android:text="@string/welcome_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="#660033" />
 
     <EditText
-        android:id="@+id/username_editText"
+        android:id="@+id/login_username_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username_hint"
@@ -29,7 +29,7 @@
         android:gravity="center" />
 
     <EditText
-        android:id="@+id/password_editText"
+        android:id="@+id/login_password_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password_hint"

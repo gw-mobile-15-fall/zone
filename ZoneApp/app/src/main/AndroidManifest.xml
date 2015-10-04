@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity
+
             android:name=".MainActivity"
             android:label="@string/app_name" >
         </activity>
@@ -40,6 +41,12 @@
             android:name=".FindPasswordActivity"
             android:label="@string/title_activity_find_password"
             android:theme="@style/AppTheme.NoActionBar" >
+            android:name=".RequestHistoryActivity"
+            android:label="@string/title_activity_request_history" >
+        </activity>
+        <activity
+            android:name=".RequestsNearby"
+            android:label="@string/title_activity_requests_nearby" >
         </activity>
     </application>
 

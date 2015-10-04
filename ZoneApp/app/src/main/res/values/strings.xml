@@ -28,4 +28,14 @@
     <string name="use_current_location_Button">Use Current Location</string>
     <string name="submit_request_label">Create Request</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="hello_Yang">Hello Yang</string>
+    <string name="Back_Button_Text">Back</string>
+    <string name="request_history">Request History</string>
+    <string name="requests_nearby">Requests Nearby</string>
+    <string name="title_activity_request_history">RequestHistoryActivity</string>
+    <string name="distance_text">Distance</string>
+    <string name="request_time_text">When</string>
+    <string name="request_location_text">where</string>
+    <string name="request_content_text">What</string>
+    <string name="title_activity_requests_nearby">RequestsNearby</string>
 </resources>

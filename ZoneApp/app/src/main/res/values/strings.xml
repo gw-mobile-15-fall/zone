@@ -22,4 +22,9 @@
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_find_password">FindPasswordActivity</string>
     <string name="find_password_label">Find Password !</string>
+    <string name="request_description_label">Request Description</string>
+    <string name="request_description_hint">Please type in a brief desciption of your request...</string>
+    <string name="specify_location_Button">Specify a Location on Map</string>
+    <string name="use_current_location_Button">Use Current Location</string>
+    <string name="submit_request_label">Create Request</string>
 </resources>

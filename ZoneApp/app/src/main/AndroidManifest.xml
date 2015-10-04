@@ -41,9 +41,13 @@
             android:name=".FindPasswordActivity"
             android:label="@string/title_activity_find_password"
             android:theme="@style/AppTheme.NoActionBar" >
-            android:name=".RequestHistoryActivity"
+        </activity>
+
+        <activity
+        android:name=".RequestHistoryActivity"
             android:label="@string/title_activity_request_history" >
         </activity>
+
         <activity
             android:name=".RequestsNearby"
             android:label="@string/title_activity_requests_nearby" >

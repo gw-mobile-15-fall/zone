@@ -38,4 +38,5 @@
     <string name="request_location_text">where</string>
     <string name="request_content_text">What</string>
     <string name="title_activity_requests_nearby">RequestsNearby</string>
+    <string name="submit_create_label">Create</string>
 </resources>

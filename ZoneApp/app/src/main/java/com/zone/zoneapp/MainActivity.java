@@ -13,6 +13,9 @@ public class MainActivity extends AppCompatActivity {
     TextView mWelcomeTextView;
 
     Button mCreateRequest;
+    Button mNearbyRequset;
+    Button mRequestHistory;
+    Button mEditProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, CreateRequestActivity.class);
+                i.putExtra(LoginActivity.EXTRA_USERNAME, mUserName);
+                startActivity(i);
+            }
+        });
+
+        mNearbyRequset = (Button)findViewById(R.id.nearby_request_Button);
+        mNearbyRequset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, RequestsNearby.class);
+                i.putExtra(LoginActivity.EXTRA_USERNAME, mUserName);
+                startActivity(i);
+            }
+        });
+
+        mRequestHistory = (Button)findViewById(R.id.request_history_Button);
+        mRequestHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, RequestHistoryActivity.class);
+                i.putExtra(LoginActivity.EXTRA_USERNAME, mUserName);
+                startActivity(i);
+            }
+        });
+
+        mEditProfile = (Button)findViewById(R.id.edit_profile_Button);
+        mEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, UpdateProfileActivity.class);
                 i.putExtra(LoginActivity.EXTRA_USERNAME, mUserName);
                 startActivity(i);
             }

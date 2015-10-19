@@ -2,6 +2,7 @@ package com.zone.zoneapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -11,12 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+<<<<<<< Updated upstream
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
+=======
+import com.zone.zoneapp.utils.LocationFinder;
+
+public class LoginActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
+>>>>>>> Stashed changes
 
     EditText mUsernameEditText;
     EditText mPasswordEditText;
@@ -76,7 +83,20 @@ public class LoginActivity extends AppCompatActivity {
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< Updated upstream
                 login();
+=======
+                if (true){
+                    LocationFinder locationFinder = new LocationFinder(LoginActivity.this,LoginActivity.this);
+                    locationFinder.detectLocationOneTime();
+                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    i.putExtra(EXTRA_USERNAME, user.getUserName());
+                    startActivity(i);
+                }
+                else{
+                    Toast.makeText(LoginActivity.this, "Incorrect Account Information !", Toast.LENGTH_SHORT).show();
+                }
+>>>>>>> Stashed changes
             }
         });
 
@@ -148,7 +168,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void locationFound(Location location) {
+        Toast.makeText(LoginActivity.this,"Latitude: "+Double.toString(location.getLatitude())+", Longitude: "+Double.toString(location.getLongitude()),Toast.LENGTH_SHORT).show();
 
+    }
 
+    @Override
+    public void locationNotFound(LocationFinder.FailureReason failureReason) {
 
+    }
 }

@@ -12,18 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-<<<<<<< Updated upstream
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-
-public class LoginActivity extends AppCompatActivity {
-=======
 import com.zone.zoneapp.utils.LocationFinder;
 
 public class LoginActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
->>>>>>> Stashed changes
 
     EditText mUsernameEditText;
     EditText mPasswordEditText;
@@ -83,9 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< Updated upstream
                 login();
-=======
                 if (true){
                     LocationFinder locationFinder = new LocationFinder(LoginActivity.this,LoginActivity.this);
                     locationFinder.detectLocationOneTime();
@@ -96,7 +88,6 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
                 else{
                     Toast.makeText(LoginActivity.this, "Incorrect Account Information !", Toast.LENGTH_SHORT).show();
                 }
->>>>>>> Stashed changes
             }
         });
 

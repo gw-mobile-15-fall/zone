@@ -6,15 +6,17 @@
     android:gravity="center_vertical">
 
 
-    <TextView
-        android:text="@string/update_username_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_marginLeft="50dp"
-        android:textStyle="bold" />
+    <!--<TextView-->
+        <!--android:id="@+id/user_name"-->
+        <!--android:text="@string/update_username_label"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="15sp"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:textStyle="bold" />-->
 
     <EditText
+        android:hint="@string/update_username_label"
         android:id="@+id/signup_username_EditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -22,15 +24,16 @@
         android:layout_gravity="center_horizontal"/>
 
 
-    <TextView
-        android:text="@string/update_email_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_marginLeft="50dp"
-        android:textStyle="bold" />
+    <!--<TextView-->
+        <!--android:text="@string/update_email_label"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="15sp"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:textStyle="bold" />-->
 
     <EditText
+        android:hint="@string/update_email_label"
         android:id="@+id/signup_email_EditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -38,15 +41,16 @@
         android:layout_gravity="center_horizontal"/>
 
 
-    <TextView
-        android:text="@string/update_password_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_marginLeft="50dp"
-        android:textStyle="bold" />
+    <!--<TextView-->
+        <!--android:text="@string/update_password_label"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="15sp"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:textStyle="bold" />-->
 
     <EditText
+        android:hint="@string/update_password_label"
         android:id="@+id/signup_password_EditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -54,15 +58,16 @@
         android:layout_gravity="center_horizontal"/>
 
 
-    <TextView
-        android:text="@string/update_re_password_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_marginLeft="50dp"
-        android:textStyle="bold" />
+    <!--<TextView-->
+        <!--android:text="@string/update_re_password_label"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="15sp"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:textStyle="bold" />-->
 
     <EditText
+        android:hint="@string/update_re_password_label"
         android:id="@+id/signup_re_password_EditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -71,7 +76,7 @@
 
 
     <Button
-        android:id="@+id/signup_submit_Button"
+        android:id="@+id/signup_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit_create_label"

@@ -30,6 +30,7 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/find_location_on_google_map"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/specify_location_Button"

@@ -1,5 +1,6 @@
 package com.zone.zoneapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,11 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.LogInCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+
 public class LoginActivity extends AppCompatActivity {
 
-    EditText mUsernameTextView;
-    EditText mPasswordTextView;
-    Button mSignButton;
+    EditText mUsernameEditText;
+    EditText mPasswordEditText;
+    Button mSignInButton;
     Button mForgetButton;
     Button mCreateButton;
     UserAccount user;
@@ -26,11 +32,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         user = new UserAccount();
 
-        mUsernameTextView = (EditText)findViewById(R.id.login_username_EditText);
-        mUsernameTextView.addTextChangedListener(new TextWatcher() {
+        mUsernameEditText = (EditText)findViewById(R.id.login_username_EditText);
+        mUsernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -48,8 +53,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        mPasswordTextView = (EditText)findViewById(R.id.login_password_EditText);
-        mPasswordTextView.addTextChangedListener(new TextWatcher() {
+        mPasswordEditText = (EditText)findViewById(R.id.login_password_EditText);
+        mPasswordEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -67,18 +72,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        mSignButton = (Button)findViewById(R.id.sign_in_Button);
-        mSignButton.setOnClickListener(new View.OnClickListener() {
+        mSignInButton = (Button)findViewById(R.id.sign_in_Button);
+        mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (true){
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    i.putExtra(EXTRA_USERNAME, user.getUserName());
-                    startActivity(i);
-                }
-                else{
-                    Toast.makeText(LoginActivity.this, "Incorrect Account Information !", Toast.LENGTH_SHORT).show();
-                }
+                login();
             }
         });
 
@@ -102,7 +100,53 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+    private void login() {
+        String username = mUsernameEditText.getText().toString().trim();
+        String password = mPasswordEditText.getText().toString().trim();
 
+        // Validate the log in data
+        boolean validationError = false;
+        StringBuilder validationErrorMessage = new StringBuilder(getString(R.string.error_intro));
+        if (username.length() == 0) {
+            validationError = true;
+            validationErrorMessage.append(getString(R.string.error_blank_username));
+        }
+        if (password.length() == 0) {
+            if (validationError) {
+                validationErrorMessage.append(getString(R.string.error_join));
+            }
+            validationError = true;
+            validationErrorMessage.append(getString(R.string.error_blank_password));
+        }
+        validationErrorMessage.append(getString(R.string.error_end));
+
+
+        if (validationError) {
+            Toast.makeText(LoginActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
+        // Set up a progress dialog
+        final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+        dialog.setMessage(getString(R.string.progress_login));
+        dialog.show();
+        // Call the Parse login method
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                dialog.dismiss();
+                if (e != null) {
+                    // Show the error message
+                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
 
 
 

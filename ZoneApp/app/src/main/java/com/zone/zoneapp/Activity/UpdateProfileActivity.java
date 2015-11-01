@@ -1,7 +1,9 @@
-package com.zone.zoneapp;
+package com.zone.zoneapp.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.zone.zoneapp.R;
 
 public class UpdateProfileActivity extends AppCompatActivity {
 

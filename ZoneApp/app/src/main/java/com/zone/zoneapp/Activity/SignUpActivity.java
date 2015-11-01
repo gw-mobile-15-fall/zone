@@ -1,4 +1,4 @@
-package com.zone.zoneapp;
+package com.zone.zoneapp.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,11 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+import com.zone.zoneapp.R;
 
 public class SignUpActivity extends AppCompatActivity {
     Button mSignUpButton;

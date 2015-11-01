@@ -1,4 +1,4 @@
-package com.zone.zoneapp;
+package com.zone.zoneapp.Activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.zone.zoneapp.model.ListItem;
+import com.zone.zoneapp.R;
 
 import java.util.ArrayList;
 

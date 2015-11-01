@@ -1,4 +1,4 @@
-package com.zone.zoneapp;
+package com.zone.zoneapp.model;
 /**
  * Created by YangLiu on 10/4/2015.
  */

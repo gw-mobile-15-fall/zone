@@ -1,4 +1,4 @@
-package com.zone.zoneapp;
+package com.zone.zoneapp.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.zone.zoneapp.R;
+import com.zone.zoneapp.model.UserAccount;
 import com.zone.zoneapp.utils.LocationFinder;
 
 public class LoginActivity extends AppCompatActivity implements LocationFinder.LocationDetector{

@@ -1,4 +1,4 @@
-package com.zone.zoneapp;
+package com.zone.zoneapp.Activity;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.zone.zoneapp.R;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 

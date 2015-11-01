@@ -1,6 +1,7 @@
 package com.zone.zoneapp.utils;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,15 +13,18 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.zone.zoneapp.R;
+
 /**
- * Created by hpishepei on 10/19/15.
+ * Created by YangLiu on 10/24/2015.
+ *
  */
-public class LocationFinder implements LocationListener{
+public class LocationFinder implements LocationListener {
     private static final String TAG = "LocationFinder";
     private Context mContext;
     private LocationDetector mLocationDetector;
-
-    private final int TIMEOUT_IN_MS = 10000; //10 second timeout
+    private ProgressDialog mProgressDialog;
+    private final int TIMEOUT_IN_MS = 10000; //20 second timeout
 
     private boolean mIsDetectingLocation = false;
 
@@ -29,7 +33,8 @@ public class LocationFinder implements LocationListener{
 
     public enum FailureReason{
         NO_PERMISSION,
-        TIMEOUT
+        TIMEOUT,
+        GPS_TURNED_OFF
     }
 
     public interface LocationDetector{
@@ -40,10 +45,14 @@ public class LocationFinder implements LocationListener{
     public LocationFinder(Context context, LocationDetector locationDetector){
         mContext = context;
         mLocationDetector = locationDetector;
+        mProgressDialog=new ProgressDialog(context);
     }
 
-    public void detectLocationOneTime(){
-        if(mIsDetectingLocation == false){
+    public void detectLocation(){
+        mProgressDialog.setMessage(mContext.getString(R.string.progress_loading_location_data));
+        mProgressDialog.show();
+
+        if(!mIsDetectingLocation){
             mIsDetectingLocation = true;
 
             if(mLocationManager == null){
@@ -53,11 +62,18 @@ public class LocationFinder implements LocationListener{
 
             if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < 23) {
                 mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                startTimer();
+                if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    endLocationDetection();
+                    mProgressDialog.dismiss();
+                    mLocationDetector.locationNotFound(FailureReason.GPS_TURNED_OFF);
+                } else {
+                    startTimer();
+                }
             }
             else {
                 endLocationDetection();
                 mLocationDetector.locationNotFound(FailureReason.NO_PERMISSION);
+                mProgressDialog.dismiss();
             }
         }
         else{
@@ -65,8 +81,8 @@ public class LocationFinder implements LocationListener{
         }
     }
 
-
     private void endLocationDetection(){
+
         if(mIsDetectingLocation) {
             mIsDetectingLocation = false;
 
@@ -76,22 +92,21 @@ public class LocationFinder implements LocationListener{
         }
     }
 
+    private void startTimer(){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mIsDetectingLocation){
+                    fallbackOnLastKnownLocation();
+                }
+            }
+        }, TIMEOUT_IN_MS);
 
-     private void startTimer(){
-     Handler handler = new Handler();
-     handler.postDelayed(new Runnable() {
-         @Override
-         public void run() {
-             if(mIsDetectingLocation){
-                 fallbackOnLastKnownLocation();
-             }
-         }
-     }, TIMEOUT_IN_MS);
-
-     }
-
+    }
 
     private void fallbackOnLastKnownLocation(){
+        Log.d(TAG,"fall back called");
         Location lastKnownLocation = null;
 
         if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < 23) {
@@ -100,15 +115,21 @@ public class LocationFinder implements LocationListener{
 
         if(lastKnownLocation != null){
             mLocationDetector.locationFound(lastKnownLocation);
+            mProgressDialog.dismiss();
+
         }
         else{
             mLocationDetector.locationNotFound(FailureReason.TIMEOUT);
+            mProgressDialog.dismiss();
         }
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        endLocationDetection();//Jesus.....this is why I have the fall back called every SINGLE time!!!
         mLocationDetector.locationFound(location);
+        Log.d(TAG,"onLocationChangedCalled");
+        mProgressDialog.dismiss();
 
     }
 

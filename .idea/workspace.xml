@@ -2,12 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="817730b6-bfd8-4ed2-9a6f-43db254a8441" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\YangLiu\Desktop\projects\Android\zone\ZoneApp\.idea\encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\YangLiu\Desktop\projects\Android\zone\ZoneApp\.idea\runConfigurations.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\YangLiu\Desktop\projects\Android\zone\ZoneApp\ZoneApp.iml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\YangLiu\Desktop\projects\Android\zone\ZoneApp\app\app.iml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ZoneApp/ZoneApp.iml" afterPath="$PROJECT_DIR$/ZoneApp/ZoneApp.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ZoneApp/app/app.iml" afterPath="$PROJECT_DIR$/ZoneApp/app/app.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ZoneApp/.idea/compiler.xml" afterPath="$PROJECT_DIR$/ZoneApp/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ZoneApp/.idea/encodings.xml" afterPath="$PROJECT_DIR$/ZoneApp/.idea/encodings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ZoneApp/.idea/gradle.xml" afterPath="$PROJECT_DIR$/ZoneApp/.idea/gradle.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ZoneApp/.idea/misc.xml" afterPath="$PROJECT_DIR$/ZoneApp/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ZoneApp/.idea/modules.xml" afterPath="$PROJECT_DIR$/ZoneApp/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ZoneApp/.idea/runConfigurations.xml" afterPath="$PROJECT_DIR$/ZoneApp/.idea/runConfigurations.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ZoneApp/.idea/vcs.xml" afterPath="$PROJECT_DIR$/ZoneApp/.idea/vcs.xml" />
     </list>
     <ignored path="zone.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -54,7 +57,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="AndroidView" proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -66,13 +69,46 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane />
       </pane>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ZoneApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">

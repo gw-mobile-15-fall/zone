@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
                     if (user != null) {
 
                         LocationFinder locationFinder = new LocationFinder(LoginActivity.this,LoginActivity.this);
-                        locationFinder.detectLocationOneTime();
+                        locationFinder.detectLocation();
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
                         //i.putExtra(EXTRA_USERNAME, username);
                         startActivity(i);

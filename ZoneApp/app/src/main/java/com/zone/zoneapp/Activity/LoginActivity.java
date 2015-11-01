@@ -31,10 +31,7 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
     public static final String EXTRA_USERNAME = "com.zone.app.username";
     
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    private void updateView(){
         user = new UserAccount();
 
         mUsernameEditText = (EditText)findViewById(R.id.login_username_EditText);
@@ -80,16 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
             @Override
             public void onClick(View v) {
                 login();
-                if (true){
-                    LocationFinder locationFinder = new LocationFinder(LoginActivity.this,LoginActivity.this);
-                    locationFinder.detectLocationOneTime();
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    i.putExtra(EXTRA_USERNAME, user.getUserName());
-                    startActivity(i);
-                }
-                else{
-                    Toast.makeText(LoginActivity.this, "Incorrect Account Information !", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
 
@@ -111,10 +99,17 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
                 startActivity(i);
             }
         });
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        updateView();
 
     }
     private void login() {
-        String username = mUsernameEditText.getText().toString().trim();
+        final String username = mUsernameEditText.getText().toString().trim();
         String password = mPasswordEditText.getText().toString().trim();
 
         // Validate the log in data
@@ -140,30 +135,48 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
             return;
         }
 
-        // Set up a progress dialog
-        final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
-        dialog.setMessage(getString(R.string.progress_login));
-        dialog.show();
-        // Call the Parse login method
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                dialog.dismiss();
-                if (e != null) {
-                    // Show the error message
-                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                } else {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+        if (validationError==false){
+            // Set up a progress dialog
+            final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+            dialog.setMessage(getString(R.string.progress_login));
+            dialog.show();
+            // Call the Parse login method
+            ParseUser.logInInBackground(username, password, new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException e) {
+                    dialog.dismiss();
+                    if (user != null) {
+
+                        LocationFinder locationFinder = new LocationFinder(LoginActivity.this,LoginActivity.this);
+                        locationFinder.detectLocationOneTime();
+                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        i.putExtra(EXTRA_USERNAME, username);
+                        startActivity(i);
+
+
+                        //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        //startActivity(intent);
+
+                    } else {
+                        // Show the error message
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        updateView();
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
 
     @Override
     public void locationFound(Location location) {
         Toast.makeText(LoginActivity.this,"Latitude: "+Double.toString(location.getLatitude())+", Longitude: "+Double.toString(location.getLongitude()),Toast.LENGTH_SHORT).show();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser!=null){
+            currentUser.put("latitude",Double.toString(location.getLatitude()));
+            currentUser.put("longitude",Double.toString(location.getLongitude()));
+            currentUser.saveInBackground();
+        }
 
     }
 

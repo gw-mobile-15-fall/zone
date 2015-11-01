@@ -4,21 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 import com.zone.zoneapp.R;
-import com.zone.zoneapp.utils.Utils;
-
-import java.util.HashMap;
-import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity {
     Button mSignUpButton;
@@ -50,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void signup() {
+    private void signup(){
         final String username = mUserNameEditText.getText().toString().trim();
         final String password = mPasswordEditText.getText().toString().trim();
         String passwordAgain = mReEnterPasswordEditText.getText().toString().trim();
@@ -78,15 +72,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
         validationErrorMessage.append(getString(R.string.error_end));
 
-        if (!email.contains("@")) {
-            if (validationError) {
-                validationErrorMessage.append(getString(R.string.error_email));
-            }
-            validationError = true;
-            validationErrorMessage.append(getString(R.string.error_mismatched_passwords));
-        }
-        validationErrorMessage.append(getString(R.string.error_end));
-
 
 
         if (validationError==false){
@@ -96,38 +81,30 @@ public class SignUpActivity extends AppCompatActivity {
             dialog.setMessage(getString(R.string.progress_signup));
             dialog.show();
 
+            // Set up a new Parse user
+            ParseUser user = new ParseUser();
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setEmail(email);
 
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("UserInfo");
-            query.whereEqualTo("username", username);
-            query.findInBackground(new FindCallback<ParseObject>() {
-                public void done(List<ParseObject> list, ParseException e) {
-                    if (e == null) {
-                        Log.d("score", "Retrieved " + list.size());
-
-                        if (list.size()==0){
-                            HashMap<String,String> map = new HashMap<String,String>();
-                            map.put("username",username);
-                            map.put("email",email);
-                            map.put("password",password);
-                            Utils.insertToParse("UserInfo", map);
-                            dialog.dismiss();
-                            Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
-                            startActivity(i);
-                        }
-
-                        else {
-                            dialog.dismiss();
-                            Toast.makeText(SignUpActivity.this,R.string.duplicate_username,Toast.LENGTH_SHORT).show();
-                            updateView();
-
-                        }
-
-
+            // Call the Parse signup method
+            user.signUpInBackground(new SignUpCallback() {
+                @Override
+                public void done(ParseException e) {
+                    dialog.dismiss();
+                    if (e != null) {
+                        // Show the error message
+                        Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     } else {
-                        Log.d("score", "Error: " + e.getMessage());
+                        // Start an intent for the dispatch activity
+                        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
                 }
             });
+
+
 
         }
         // If there is a validation error, display the error

@@ -4,15 +4,21 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.zone.zoneapp.R;
+import com.zone.zoneapp.utils.Utils;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity {
     Button mSignUpButton;
@@ -21,11 +27,16 @@ public class SignUpActivity extends AppCompatActivity {
     EditText mPasswordEditText;
     EditText mReEnterPasswordEditText;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-//        Parse.initialize(this, getString(R.string.parse_application_id), getString(R.string.parse_client_key));
+        updateView();
+    }
+
+    private void updateView(){
         mSignUpButton = (Button) findViewById(R.id.signup_submit_button);
         mUserNameEditText = (EditText) findViewById(R.id.signup_username_EditText);
         mPasswordEditText = (EditText) findViewById(R.id.signup_password_EditText);
@@ -40,10 +51,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void signup() {
-        String username = mUserNameEditText.getText().toString().trim();
-        String password = mPasswordEditText.getText().toString().trim();
+        final String username = mUserNameEditText.getText().toString().trim();
+        final String password = mPasswordEditText.getText().toString().trim();
         String passwordAgain = mReEnterPasswordEditText.getText().toString().trim();
-        String email = mEmailEditText.getText().toString().trim();
+        final String email = mEmailEditText.getText().toString().trim();
         // Validate the sign up data
         boolean validationError = false;
         StringBuilder validationErrorMessage = new StringBuilder(getString(R.string.error_intro));
@@ -67,40 +78,64 @@ public class SignUpActivity extends AppCompatActivity {
         }
         validationErrorMessage.append(getString(R.string.error_end));
 
+        if (!email.contains("@")) {
+            if (validationError) {
+                validationErrorMessage.append(getString(R.string.error_email));
+            }
+            validationError = true;
+            validationErrorMessage.append(getString(R.string.error_mismatched_passwords));
+        }
+        validationErrorMessage.append(getString(R.string.error_end));
+
+
+
+        if (validationError==false){
+
+            // Set up a progress dialog
+            final ProgressDialog dialog = new ProgressDialog(SignUpActivity.this);
+            dialog.setMessage(getString(R.string.progress_signup));
+            dialog.show();
+
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("UserInfo");
+            query.whereEqualTo("username", username);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (e == null) {
+                        Log.d("score", "Retrieved " + list.size());
+
+                        if (list.size()==0){
+                            HashMap<String,String> map = new HashMap<String,String>();
+                            map.put("username",username);
+                            map.put("email",email);
+                            map.put("password",password);
+                            Utils.insertToParse("UserInfo", map);
+                            dialog.dismiss();
+                            Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
+                            startActivity(i);
+                        }
+
+                        else {
+                            dialog.dismiss();
+                            Toast.makeText(SignUpActivity.this,R.string.duplicate_username,Toast.LENGTH_SHORT).show();
+                            updateView();
+
+                        }
+
+
+                    } else {
+                        Log.d("score", "Error: " + e.getMessage());
+                    }
+                }
+            });
+
+        }
         // If there is a validation error, display the error
-        if (validationError) {
-            Toast.makeText(SignUpActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG)
-                    .show();
-            return;
+        else {
+            Toast.makeText(SignUpActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG).show();
+            updateView();
         }
 
-        // Set up a progress dialog
-        final ProgressDialog dialog = new ProgressDialog(SignUpActivity.this);
-        dialog.setMessage(getString(R.string.progress_signup));
-        dialog.show();
-
-        // Set up a new Parse user
-        ParseUser user = new ParseUser();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
-
-        // Call the Parse signup method
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                dialog.dismiss();
-                if (e != null) {
-                    // Show the error message
-                    Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                } else {
-                    // Start an intent for the dispatch activity
-                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-            }
-        });
     }
 
 

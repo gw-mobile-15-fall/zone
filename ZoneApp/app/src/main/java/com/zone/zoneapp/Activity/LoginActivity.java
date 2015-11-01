@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
     public static final String EXTRA_USERNAME = "com.zone.app.username";
     
 
+
     private void updateView(){
         user = new UserAccount();
 
@@ -103,9 +104,22 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        updateView();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            // do stuff with the user
+            Intent i = new Intent(this,MainActivity.class);
+            startActivity(i);
+
+        } else {
+            // show the signup or login screen
+            setContentView(R.layout.activity_login);
+
+            updateView();
+        }
+
+
+
 
     }
     private void login() {
@@ -150,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
                         LocationFinder locationFinder = new LocationFinder(LoginActivity.this,LoginActivity.this);
                         locationFinder.detectLocationOneTime();
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        i.putExtra(EXTRA_USERNAME, username);
+                        //i.putExtra(EXTRA_USERNAME, username);
                         startActivity(i);
 
 

@@ -39,6 +39,7 @@
             android:layout_weight="1"/>
 
         <Button
+            android:id="@+id/use_current_location"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -49,7 +50,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/text_specify_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:hint="@string/location_specify"/>
+
     <Button
+        android:id="@+id/create_request_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit_request_label"/>

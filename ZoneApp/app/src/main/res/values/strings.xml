@@ -27,7 +27,7 @@
     <string name="specify_location_Button">Specify a Location on Map</string>
     <string name="use_current_location_Button">Use Current Location</string>
     <string name="submit_request_label">Create Request</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">Zone</string>
     <string name="request_history">Request History</string>
     <string name="requests_nearby">Requests Nearby</string>
     <string name="title_activity_request_history">RequestHistoryActivity</string>
@@ -54,6 +54,11 @@
     <string name="title_activity_dispatch_activiy">DispatchActiviy</string>
     <string name="progress_login">Please wait</string>
     <string name="duplicate_account">Username or email has already been taken...</string>
+    <string name="location_specify">Please specify a location.</string>
+    <string name="fetching_current_location">Fetching current location...</string>
+    <string name="location_not_found">Location not found!</string>
+    <string name="please_type_des">Please type in a brief description!</string>
+    <string name="logout">logout</string>
 
 
 </resources>

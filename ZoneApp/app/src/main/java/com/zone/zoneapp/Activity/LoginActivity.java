@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.model.UserAccount;
@@ -106,8 +108,11 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
         super.onCreate(savedInstanceState);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
+
         if (currentUser != null) {
             // do stuff with the user
+            Log.i("aaa", currentUser.getUsername());
+
             Intent i = new Intent(this,MainActivity.class);
             startActivity(i);
 
@@ -117,6 +122,7 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
 
             updateView();
         }
+
 
 
 
@@ -187,8 +193,8 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
         Toast.makeText(LoginActivity.this,"Latitude: "+Double.toString(location.getLatitude())+", Longitude: "+Double.toString(location.getLongitude()),Toast.LENGTH_SHORT).show();
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser!=null){
-            currentUser.put("latitude",Double.toString(location.getLatitude()));
-            currentUser.put("longitude",Double.toString(location.getLongitude()));
+            ParseGeoPoint parseGeoPoint = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
+            currentUser.put("location",parseGeoPoint);
             currentUser.saveInBackground();
         }
 

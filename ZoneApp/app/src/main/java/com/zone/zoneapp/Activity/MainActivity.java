@@ -12,13 +12,14 @@ import com.zone.zoneapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    String mUserName;
-    TextView mWelcomeTextView;
+    private String mUserName;
+    private TextView mWelcomeTextView;
 
-    Button mCreateRequest;
-    Button mNearbyRequset;
-    Button mRequestHistory;
-    Button mEditProfile;
+    private Button mCreateRequest;
+    private Button mNearbyRequset;
+    private Button mRequestHistory;
+    private Button mEditProfile;
+    private Button mLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mLogout = (Button)findViewById(R.id.logout_Button);
+        mLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                Intent i = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
 

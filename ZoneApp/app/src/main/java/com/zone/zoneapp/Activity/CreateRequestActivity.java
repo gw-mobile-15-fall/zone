@@ -23,7 +23,7 @@ import com.zone.zoneapp.utils.LocationFinder;
 
 public class CreateRequestActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
 
-    private static final int MAPREQUESTCODE = 12314;
+    public static final int MAPREQUESTCODE = 12314;
 
     private EditText mDes;
     private Button mMapLoc;
@@ -191,6 +191,18 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         parseObject.put("postOwner", ParseUser.getCurrentUser());
         parseObject.put("postTitle",mTitle);
         parseObject.saveInBackground();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data==null){
+            return;
+        }
+        else if (data.getSerializableExtra("LocationExtra")!=null){
+            mLocation = (Location)data.getSerializableExtra("LocationExtra");
+            mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
+        }
     }
 }
 

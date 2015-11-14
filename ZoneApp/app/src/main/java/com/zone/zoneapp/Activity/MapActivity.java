@@ -1,8 +1,9 @@
 package com.zone.zoneapp.Activity;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -52,5 +53,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(38.898938, -77.048825))
                 .title("Marker"));
+    }
+
+
+    private void setResult(Location location){
+        Intent i = new Intent();
+        i.putExtra("MapExtra",location);
+        setResult(CreateRequestActivity.MAPREQUESTCODE,i);
     }
 }

@@ -43,14 +43,15 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage(this.getString(R.string.loading));
         //populateListView();
+        mProgressDialog.show();
+        LocationFinder locationFinder = new LocationFinder(this,this);
+        locationFinder.detectLocationOneTime();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mProgressDialog.show();
-        LocationFinder locationFinder = new LocationFinder(this,this);
-        locationFinder.detectLocationOneTime();
+
     }
 
     private void populateListView(){

@@ -47,7 +47,8 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_request);
 
-        mDesciption="";
+        mTitle = "";
+        mDesciption = "";
         mLocation = null;
         mProgressDislog = new ProgressDialog(this);
 
@@ -145,10 +146,14 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         mCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mDesciption.equals("")){
+                if (mDesciption.equals("")||mTitle.equals("")){
+                    makeToast(CreateRequestActivity.this.getString(R.string.please_type_informtion));
+
+                }
+                else if (mDesciption.equals("")){
                     makeToast(CreateRequestActivity.this.getString(R.string.please_type_des));
                 }
-                if (mLocation == null){
+                else if (mLocation == null){
                     makeToast(CreateRequestActivity.this.getString(R.string.please_specify_your_location));
                 }
                 else {

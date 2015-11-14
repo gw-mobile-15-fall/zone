@@ -64,6 +64,7 @@
     <string name="loading">Loading information ...</string>
     <string name="cannot_load">Load information fail!</string>
     <string name="title_activity_request_detail">RequestDetailActivity</string>
+    <string name="please_type_informtion">Information need!</string>
 
 
 </resources>

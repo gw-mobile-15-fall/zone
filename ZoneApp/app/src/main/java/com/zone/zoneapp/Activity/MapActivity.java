@@ -56,9 +56,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
 
+    // TODO: 11/14/15 once get location information, call this function to sent result back to create request activity, and finish this page
     private void setResult(Location location){
         Intent i = new Intent();
         i.putExtra("MapExtra",location);
         setResult(CreateRequestActivity.MAPREQUESTCODE,i);
+        this.finish();
     }
 }

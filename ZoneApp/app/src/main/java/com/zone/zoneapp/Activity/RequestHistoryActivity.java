@@ -4,13 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import com.zone.zoneapp.model.ListItem;
 import com.zone.zoneapp.R;
-
-import java.util.ArrayList;
 
 public class RequestHistoryActivity extends Activity {
 
@@ -23,6 +18,7 @@ public class RequestHistoryActivity extends Activity {
     }
     //The following populate method may still contain problems
     private void populateListView(){
+        /**
         ListView requestHistoryListView = (ListView) findViewById(R.id.requestHistoryList);
         ArrayList<ListItem> array = new ArrayList<>();
         ListItem request1  = new ListItem("SEH","10-04-15", "Lost Book");
@@ -33,6 +29,7 @@ public class RequestHistoryActivity extends Activity {
         //eg. refresh the list==> populate using the new list.
         ArrayAdapter<ListItem> adapter = new MyAdapter(this, R.layout.list_item,array);
         requestHistoryListView.setAdapter(adapter);
+         */
     }
 
     @Override

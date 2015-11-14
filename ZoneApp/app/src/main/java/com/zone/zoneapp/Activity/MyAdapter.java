@@ -39,7 +39,7 @@ public class MyAdapter extends ArrayAdapter<ListItem>{
             TextView subject = (TextView) v.findViewById(R.id.subject);
 
             if (location != null) {
-                location.setText("Location: "+item.getLocation());
+                location.setText("User: "+item.getUser());
             }
 
             if(time != null) {

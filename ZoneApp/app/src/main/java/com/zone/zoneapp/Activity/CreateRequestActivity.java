@@ -30,12 +30,14 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
     private Button mCurrentLoc;
     private Button mCreate;
     private TextView mLocationDisplay;
+    private EditText mTit;
 
     private ProgressDialog mProgressDislog;
 
     private Location mLocation;
 
     private String mDesciption;
+    private String mTitle;
     private String mLatitude;
     private String mLongitude;
 
@@ -50,6 +52,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         mProgressDislog = new ProgressDialog(this);
 
 
+        mTit = (EditText)findViewById(R.id.request_Title_EditText);
         mDes = (EditText)findViewById(R.id.request_description_EditText);
         mMapLoc = (Button)findViewById(R.id.find_location_on_google_map);
         mCurrentLoc = (Button)findViewById(R.id.use_current_location);
@@ -72,6 +75,29 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
     @Override
     protected void onResume() {
         super.onResume();
+        mTit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().contains("\n")) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mTit.getWindowToken(), 0);
+                    mTit.setText(s.toString().replace("\n", ""));
+                }
+                mTitle = mTit.getText().toString();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         mDes.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -80,12 +106,13 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mDesciption = mDes.getText().toString();
                 if (s.toString().contains("\n")) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mDes.getWindowToken(), 0);
                     mDes.setText(s.toString().replace("\n",""));
                 }
+                mDesciption = mDes.getText().toString();
+
             }
 
             @Override
@@ -143,6 +170,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
 
     @Override
     public void locationNotFound(LocationFinder.FailureReason failureReason) {
+        mProgressDislog.dismiss();
         makeToast(this.getString(R.string.location_not_found));
     }
 
@@ -156,6 +184,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         parseObject.put("postLocation",parseGeoPoint);
         parseObject.put("postText",mDesciption);
         parseObject.put("postOwner", ParseUser.getCurrentUser());
+        parseObject.put("postTitle",mTitle);
         parseObject.saveInBackground();
     }
 }

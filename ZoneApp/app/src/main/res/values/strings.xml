@@ -59,6 +59,11 @@
     <string name="location_not_found">Location not found!</string>
     <string name="please_type_des">Please type in a brief description!</string>
     <string name="logout">logout</string>
+    <string name="request_title_hint">Enter a brief title here</string>
+    <string name="maxlength">Exceed maximal length!</string>
+    <string name="loading">Loading information ...</string>
+    <string name="cannot_load">Load information fail!</string>
+    <string name="title_activity_request_detail">RequestDetailActivity</string>
 
 
 </resources>

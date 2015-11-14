@@ -1,16 +1,19 @@
 package com.zone.zoneapp.Activity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
+import com.zone.zoneapp.utils.LocationFinder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
 
     private String mUserName;
     private TextView mWelcomeTextView;
@@ -21,10 +24,14 @@ public class MainActivity extends AppCompatActivity {
     private Button mEditProfile;
     private Button mLogout;
 
+    private Location mCurrentLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mCurrentLocation = null;
 
         ParseUser currentUser = ParseUser.getCurrentUser();
 
@@ -86,8 +93,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocationFinder locationFinder = new LocationFinder(this,this);
+        locationFinder.detectLocationMultipleTime();
+    }
 
+    @Override
+    public void locationFound(Location location) {
+        if (mCurrentLocation == null){
+            mCurrentLocation = location;
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            if (currentUser!=null){
+                //Log.i("aaa",Double.toString(mCurrentLocation.getLatitude())+Double.toString(mCurrentLocation.getLongitude()));
+                ParseGeoPoint parseGeoPoint = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
+                currentUser.put("location",parseGeoPoint);
+                currentUser.saveInBackground();
+            }
+        }
+        else if(location.getLatitude()!=mCurrentLocation.getLatitude() && location.getLongitude()!=mCurrentLocation.getLongitude()){
+            mCurrentLocation = location;
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            if (currentUser!=null){
+                //Log.i("aaa",Double.toString(mCurrentLocation.getLatitude())+Double.toString(mCurrentLocation.getLongitude()));
+                ParseGeoPoint parseGeoPoint = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
+                currentUser.put("location",parseGeoPoint);
+                currentUser.saveInBackground();
+            }
+        }
 
+    }
 
+    @Override
+    public void locationNotFound(LocationFinder.FailureReason failureReason) {
 
+    }
 }

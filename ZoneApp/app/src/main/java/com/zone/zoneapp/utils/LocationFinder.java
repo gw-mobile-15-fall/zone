@@ -42,6 +42,29 @@ public class LocationFinder implements LocationListener{
         mLocationDetector = locationDetector;
     }
 
+    public void detectLocationMultipleTime(){
+        if(mIsDetectingLocation == false){
+            mIsDetectingLocation = true;
+
+            if(mLocationManager == null){
+                mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            }
+
+
+            if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < 23) {
+                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3600000, 1000 ,LocationFinder.this);
+                startTimer();
+            }
+            else {
+                endLocationDetection();
+                mLocationDetector.locationNotFound(FailureReason.NO_PERMISSION);
+            }
+        }
+        else{
+            Log.d(TAG, "already trying to detect location");
+        }
+    }
+
     public void detectLocationOneTime(){
         if(mIsDetectingLocation == false){
             mIsDetectingLocation = true;

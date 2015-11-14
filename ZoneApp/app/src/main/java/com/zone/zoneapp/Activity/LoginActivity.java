@@ -2,12 +2,10 @@ package com.zone.zoneapp.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,13 +13,11 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.model.UserAccount;
-import com.zone.zoneapp.utils.LocationFinder;
 
-public class LoginActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
+public class LoginActivity extends AppCompatActivity{
 
     EditText mUsernameEditText;
     EditText mPasswordEditText;
@@ -111,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
 
         if (currentUser != null) {
             // do stuff with the user
-            Log.i("aaa", currentUser.getUsername());
+            //Log.i("aaa", currentUser.getUsername());
 
             Intent i = new Intent(this,MainActivity.class);
             startActivity(i);
@@ -167,8 +163,8 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
                     dialog.dismiss();
                     if (user != null) {
 
-                        LocationFinder locationFinder = new LocationFinder(LoginActivity.this,LoginActivity.this);
-                        locationFinder.detectLocationOneTime();
+                        //LocationFinder locationFinder = new LocationFinder(LoginActivity.this,LoginActivity.this);
+                        //locationFinder.detectLocationOneTime();
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
                         //i.putExtra(EXTRA_USERNAME, username);
                         startActivity(i);
@@ -188,6 +184,7 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
 
     }
 
+    /**
     @Override
     public void locationFound(Location location) {
         //Toast.makeText(LoginActivity.this,"Latitude: "+Double.toString(location.getLatitude())+", Longitude: "+Double.toString(location.getLongitude()),Toast.LENGTH_SHORT).show();
@@ -204,4 +201,5 @@ public class LoginActivity extends AppCompatActivity implements LocationFinder.L
     public void locationNotFound(LocationFinder.FailureReason failureReason) {
 
     }
+    */
 }

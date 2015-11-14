@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,9 +68,8 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListItem listItem = (ListItem)parent.getItemAtPosition(position);
                 Intent i = new Intent(RequestsNearby.this,RequestDetailActivity.class);
-                i.putExtra("ItemDetail",listItem);
+                i.putExtra("ItemDetail", (ListItem) parent.getItemAtPosition(position));
                 startActivity(i);
             }
         });
@@ -127,11 +125,10 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 for (ParseObject i : objects){
-                    ListItem item = new ListItem(i.getParseUser("postOwner").getUsername().toString(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation"));
+                    ListItem item = new ListItem(i.getParseUser("postOwner").getUsername().toString(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
 
                     mList.add(item);
                 }
-                Log.i("aaa","here11");
 
                 mProgressDialog.dismiss();
                 populateListView();

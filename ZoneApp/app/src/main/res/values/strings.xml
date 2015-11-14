@@ -65,6 +65,7 @@
     <string name="cannot_load">Load information fail!</string>
     <string name="title_activity_request_detail">RequestDetailActivity</string>
     <string name="please_type_informtion">Information need!</string>
+    <string name="start_chat_label">Start Chat</string>
 
 
 </resources>

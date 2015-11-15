@@ -1,27 +1,49 @@
 package com.zone.zoneapp.Activity;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.zone.zoneapp.R;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    private static final LatLng GWU = new LatLng(38.90, -77.05);
+    private LatLng mSelectedLocation;
+    private Button mUseSelectedLocationButton;
+    static final String TAG = "MapActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         MapFragment mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
+        //The default location is nothing is specified. A better default location might be the current location?
+        //TODO possibility of implementing a search input field where you can search the location on google map?
+        mSelectedLocation = new LatLng(GWU.latitude,GWU.longitude);
+        mUseSelectedLocationButton = (Button) findViewById(R.id.use_google_map_location_button);
+        mUseSelectedLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLocationResult(mSelectedLocation);;
+                finish();
+                Log.d(TAG,"button clicked and location " + mSelectedLocation.longitude + "," + mSelectedLocation.latitude +" was sent back");
+            }
+        });
     }
 
 
@@ -49,18 +71,39 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
+        focusOnLocation(GWU,googleMap);
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+            @Override
+            public void onMapClick(LatLng clickedLocation) {
+                mSelectedLocation = clickedLocation;
+                focusOnLocation(clickedLocation,googleMap);
+                Log.d(TAG,"new location selected at "+ mSelectedLocation.latitude + "," + mSelectedLocation.longitude);
+            }
+        });
+
+
+    }
+
+    private void focusOnLocation(LatLng location, GoogleMap googleMap){
+        googleMap.clear();
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(location)
+                .zoom(17)
+                .build();
         googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(38.898938, -77.048825))
-                .title("Marker"));
+                .position(location)
+                .title(getString(R.string.google_map_marker_text)));
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
 
+
     // TODO: 11/14/15 once get location information, call this function to sent result back to create request activity, and finish this page
-    private void setResult(Location location){
+    private void setLocationResult(LatLng mapLatLng){
         Intent i = new Intent();
-        i.putExtra("MapExtra",location);
-        setResult(CreateRequestActivity.MAPREQUESTCODE,i);
-        this.finish();
+        i.putExtra("MapLocationLat",mapLatLng.latitude);
+        i.putExtra("MapLocationLng",mapLatLng.longitude);
+        setResult(CreateRequestActivity.MAPREQUESTCODE, i);
     }
 }

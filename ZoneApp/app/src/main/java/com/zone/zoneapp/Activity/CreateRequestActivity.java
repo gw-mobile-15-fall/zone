@@ -1,13 +1,16 @@
 package com.zone.zoneapp.Activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.renderscript.Double4;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -22,8 +25,9 @@ import com.zone.zoneapp.R;
 import com.zone.zoneapp.utils.LocationFinder;
 
 public class CreateRequestActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
-
+    public static final String LOCATION_INTENT = "selectedLocation";
     public static final int MAPREQUESTCODE = 12314;
+    public static final String TAG = "CreateRequest";
 
     private EditText mDes;
     private Button mMapLoc;
@@ -210,12 +214,19 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data==null){
-            return;
+        Log.d(TAG,"onActivityResult called");
+        if (requestCode == MAPREQUESTCODE){
+            mLocation = new Location("");
+            Double lat = data.getDoubleExtra("MapLocationLat",0);
+            Double lng = data.getDoubleExtra("MapLocationLng",0);
+            mLocation.setLongitude(lng);
+            mLocation.setLatitude(lat);
+            Log.d(TAG,"new location returned from the map at " + lat + "," + lng);
+            mLocationDisplay.setText("use " + lat + "," + lng +" as your request location");
         }
-        else if (data.getSerializableExtra("LocationExtra")!=null){
-            mLocation = (Location)data.getSerializableExtra("LocationExtra");
-            mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
+        else {
+            Log.d(TAG,"something went wrong with getting the new location from the map");
+            return;
         }
     }
 }

@@ -184,22 +184,4 @@ public class LoginActivity extends AppCompatActivity{
 
     }
 
-    /**
-    @Override
-    public void locationFound(Location location) {
-        //Toast.makeText(LoginActivity.this,"Latitude: "+Double.toString(location.getLatitude())+", Longitude: "+Double.toString(location.getLongitude()),Toast.LENGTH_SHORT).show();
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser!=null){
-            ParseGeoPoint parseGeoPoint = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
-            currentUser.put("location",parseGeoPoint);
-            currentUser.saveInBackground();
-        }
-
-    }
-
-    @Override
-    public void locationNotFound(LocationFinder.FailureReason failureReason) {
-
-    }
-    */
 }

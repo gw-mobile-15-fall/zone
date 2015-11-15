@@ -106,17 +106,17 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
             mCurrentLocation = location;
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (currentUser!=null){
-                //Log.i("aaa",Double.toString(mCurrentLocation.getLatitude())+Double.toString(mCurrentLocation.getLongitude()));
                 ParseGeoPoint parseGeoPoint = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
                 currentUser.put("location",parseGeoPoint);
                 currentUser.saveInBackground();
             }
         }
+
+        //prevent duplicate location update from storing into database
         else if(location.getLatitude()!=mCurrentLocation.getLatitude() && location.getLongitude()!=mCurrentLocation.getLongitude()){
             mCurrentLocation = location;
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (currentUser!=null){
-                //Log.i("aaa",Double.toString(mCurrentLocation.getLatitude())+Double.toString(mCurrentLocation.getLongitude()));
                 ParseGeoPoint parseGeoPoint = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
                 currentUser.put("location",parseGeoPoint);
                 currentUser.saveInBackground();

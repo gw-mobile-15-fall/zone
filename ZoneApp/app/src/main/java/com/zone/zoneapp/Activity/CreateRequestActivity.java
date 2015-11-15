@@ -60,6 +60,9 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         mCreate = (Button)findViewById(R.id.create_request_Button);
         mLocationDisplay = (TextView)findViewById(R.id.text_specify_location);
 
+        //set information to views
+        updateView();
+
         /**
         Button mFindLocationOnGoogleMap = (Button) findViewById(R.id.find_location_on_google_map);
         mFindLocationOnGoogleMap.setOnClickListener(new View.OnClickListener(){
@@ -73,9 +76,9 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
          */
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void updateView() {
+
+        //for request title field
         mTit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -99,6 +102,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
             }
         });
 
+        //for request description field
         mDes.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -122,6 +126,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
             }
         });
 
+        //specify location on google map
         mMapLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +135,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
             }
         });
 
+        //use current location
         mCurrentLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,12 +149,13 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
             }
         });
 
+        //create request
         mCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //input check
                 if (mDesciption.equals("")||mTitle.equals("")){
                     makeToast(CreateRequestActivity.this.getString(R.string.please_type_informtion));
-
                 }
                 else if (mDesciption.equals("")){
                     makeToast(CreateRequestActivity.this.getString(R.string.please_type_des));
@@ -166,8 +173,13 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
     }
 
     @Override
-    public void locationFound(Location location) {
+    protected void onResume() {
+        super.onResume();
 
+    }
+
+    @Override
+    public void locationFound(Location location) {
         mProgressDislog.dismiss();
         mLocation = location;
         mLocationDisplay.setText("Latitude: " + Double.toString(location.getLatitude()) + " Longitude: " + Double.toString(location.getLongitude()));
@@ -183,6 +195,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         Toast.makeText(this,s,Toast.LENGTH_SHORT).show();
     }
 
+    //store request into parse database
     private void createPost(){
         ParseObject parseObject = new ParseObject("Posts");
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(mLocation.getLatitude(),mLocation.getLongitude());
@@ -193,6 +206,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         parseObject.saveInBackground();
     }
 
+    //wait for result from map page
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

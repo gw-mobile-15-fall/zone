@@ -121,6 +121,8 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(mLocation.getLatitude(),mLocation.getLongitude());
 
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Posts");
+
+        //find all the posts within 1km
         parseQuery.whereWithinMiles("postLocation", parseGeoPoint, 1);
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override

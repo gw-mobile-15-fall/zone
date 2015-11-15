@@ -11,6 +11,7 @@ import com.parse.ParseInstallation;
  */
 public class App extends Application {
 
+    //initial parse service
     @Override
     public void onCreate() {
         super.onCreate();

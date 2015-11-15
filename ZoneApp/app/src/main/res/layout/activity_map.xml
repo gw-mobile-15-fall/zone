@@ -10,10 +10,18 @@
 
     <TextView android:text="@string/please_specify_your_location" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/use_google_map_location_button"
+        android:text="@string/use_google_map_location_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        />
     <fragment
         android:layout_width="match_parent"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_height="wrap_content"
         android:id="@+id/map"/>
+
 
 </LinearLayout>

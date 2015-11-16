@@ -107,7 +107,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-<!--                   IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
+                <!-- IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
                 <category android:name="com.zone.zoneapp" />
             </intent-filter>
         </receiver>
@@ -115,6 +115,11 @@
         <activity
             android:name=".Activity.RequestDetailActivity"
             android:label="@string/title_activity_request_detail"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".Activity.WriteResponseActivity"
+            android:label="@string/title_activity_write_response"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

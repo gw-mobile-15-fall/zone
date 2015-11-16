@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.ParseUser;
@@ -22,6 +23,7 @@ public class RequestDetailActivity extends AppCompatActivity {
     private FloatingActionButton mChatButton;
     private ParseUser mUser;
     private ArrayList<Response> mList;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         mChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -44,6 +47,9 @@ public class RequestDetailActivity extends AppCompatActivity {
 
         mItem = (ListItem)getIntent().getSerializableExtra("ItemDetail");
         mDetailTextView = (TextView)findViewById(R.id.detail_desciprtion);
+
+        mListView = (ListView)findViewById(R.id.response_list_container);
+
     }
 
     @Override
@@ -55,4 +61,6 @@ public class RequestDetailActivity extends AppCompatActivity {
     private void updateView(){
         mDetailTextView.setText(mItem.getmDetail());
     }
+
+
 }

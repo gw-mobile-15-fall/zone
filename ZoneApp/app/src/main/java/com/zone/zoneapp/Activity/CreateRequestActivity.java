@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.renderscript.Double4;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,7 +25,7 @@ import com.zone.zoneapp.utils.LocationFinder;
 
 public class CreateRequestActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
     public static final String LOCATION_INTENT = "selectedLocation";
-    public static final int MAPREQUESTCODE = 12314;
+    public static final int MAP_REQUEST_CODE = 12314;
     public static final String TAG = "CreateRequest";
 
     private EditText mDes;
@@ -66,18 +65,6 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
 
         //set information to views
         updateView();
-
-        /**
-        Button mFindLocationOnGoogleMap = (Button) findViewById(R.id.find_location_on_google_map);
-        mFindLocationOnGoogleMap.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(),MapActivity.class);
-                startActivity(intent);
-            }
-        });
-         */
     }
 
     private void updateView() {
@@ -135,7 +122,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(CreateRequestActivity.this, MapActivity.class);
-                startActivityForResult(i, MAPREQUESTCODE);
+                startActivityForResult(i, MAP_REQUEST_CODE);
             }
         });
 
@@ -210,22 +197,32 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         parseObject.saveInBackground();
     }
 
-    //wait for result from map page
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG,"onActivityResult called");
-        if (requestCode == MAPREQUESTCODE){
-            mLocation = new Location("");
-            Double lat = data.getDoubleExtra("MapLocationLat",0);
-            Double lng = data.getDoubleExtra("MapLocationLng",0);
-            mLocation.setLongitude(lng);
-            mLocation.setLatitude(lat);
-            Log.d(TAG,"new location returned from the map at " + lat + "," + lng);
-            mLocationDisplay.setText("use " + lat + "," + lng +" as your request location");
+        if (requestCode == MAP_REQUEST_CODE){
+            if (resultCode==Activity.RESULT_OK){
+                mLocation = new Location("");
+                //TODO: better fallback location for extracting results from the mapActivity than lat = 0 and lng =0?
+                Double lat = data.getDoubleExtra("MapLocationLat",0);
+                Double lng = data.getDoubleExtra("MapLocationLng",0);
+                mLocation.setLongitude(lng);
+                mLocation.setLatitude(lat);
+                Log.d(TAG,"new location returned from the map at " + lat + "," + lng);
+                mLocationDisplay.setText("use " + lat + "," + lng +" as your request location");
+            }
+            else if (resultCode==Activity.RESULT_CANCELED){
+                Log.d(TAG,"cancel button clicked, nothing to parse in the create request activity");
+                return;
+            }
+            else {
+                Log.d(TAG, "neither cancel button nor use location button was clicked. Something weid must have happened");
+                return;
+            }
         }
         else {
-            Log.d(TAG,"something went wrong with getting the new location from the map");
+            Log.d(TAG,"the result code has changed. no location was returned");
             return;
         }
     }

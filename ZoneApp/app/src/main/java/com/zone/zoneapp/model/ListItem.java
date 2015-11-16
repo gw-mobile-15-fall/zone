@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by YangLiu on 10/4/2015.
  */
 public class ListItem implements Serializable{
+    private String mId;
     private String mUser;
     private String mTime;
     private String mSubject;
@@ -33,13 +34,22 @@ public class ListItem implements Serializable{
 
 
 
-    public ListItem(String user, String time, String subject, Double latitude, Double longitude, String text) {
+    public ListItem(String id, String user, String time, String subject, Double latitude, Double longitude, String text) {
+        this.mId = id;
         this.mUser = user;
         this.mTime = time;
         this.mSubject = subject;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
         this.mDetail = text;
+    }
+
+    public String getmId() {
+        return mId;
+    }
+
+    public void setmId(String mId) {
+        this.mId = mId;
     }
 
     public Double getmLatitude() {

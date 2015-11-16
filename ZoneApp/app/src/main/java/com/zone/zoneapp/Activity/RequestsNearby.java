@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,7 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
         mProgressDialog.setMessage(this.getString(R.string.loading));
         //populateListView();
         mProgressDialog.show();
+
         LocationFinder locationFinder = new LocationFinder(this,this);
         locationFinder.detectLocationOneTime();
     }
@@ -64,7 +66,11 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
         //TODO During practial implementation, the populateListView Method may want to take in an ArrayList as input.
         //eg. refresh the list==> populate using the new list.
         //ArrayAdapter<ListItem> adapter = new MyAdapter(this, R.layout.list_item,array);
+
+        Log.i("aaa", "2");
+
         ArrayAdapter<ListItem> adapter = new MyAdapter(this, R.layout.list_item, mList);
+        Log.i("aaa", "3");
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -104,6 +110,8 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
     public void locationFound(Location location) {
         if (mLocation == null){
             mLocation = location;
+            Log.i("aaa", "1");
+
             loadInformation();
         }
 
@@ -122,13 +130,18 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
 
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Posts");
 
-        //find all the posts within 1km
+        //find all the posts within 1 mile
         parseQuery.whereWithinMiles("postLocation", parseGeoPoint, 1);
+        Log.i("aaa", "22");
+
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 for (ParseObject i : objects){
-                    ListItem item = new ListItem(i.getParseUser("postOwner").getUsername().toString(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
+                    Log.i("aaa", i.getParseUser("postOwner").getUsername());
+
+                    ListItem item = new ListItem(i.getObjectId(),i.getParseUser("postOwner").getUsername(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
+                    Log.i("aaa", "44");
 
                     mList.add(item);
                 }

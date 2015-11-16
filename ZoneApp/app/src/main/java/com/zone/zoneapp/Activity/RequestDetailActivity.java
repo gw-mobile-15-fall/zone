@@ -8,14 +8,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.model.ListItem;
+import com.zone.zoneapp.model.Response;
+
+import java.util.ArrayList;
 
 public class RequestDetailActivity extends AppCompatActivity {
 
-    private ListItem mListItem;
+    private ListItem mItem;
     private TextView mDetailTextView;
     private FloatingActionButton mChatButton;
+    private ParseUser mUser;
+    private ArrayList<Response> mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,10 @@ public class RequestDetailActivity extends AppCompatActivity {
             }
         });
 
-        mListItem = (ListItem)getIntent().getSerializableExtra("ItemDetail");
+        mList = new ArrayList<Response>();
+        mUser = ParseUser.getCurrentUser();
+
+        mItem = (ListItem)getIntent().getSerializableExtra("ItemDetail");
         mDetailTextView = (TextView)findViewById(R.id.detail_desciprtion);
     }
 
@@ -44,6 +53,6 @@ public class RequestDetailActivity extends AppCompatActivity {
     }
 
     private void updateView(){
-        mDetailTextView.setText(mListItem.getmDetail());
+        mDetailTextView.setText(mItem.getmDetail());
     }
 }

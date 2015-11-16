@@ -49,7 +49,7 @@ public class RequestHistoryActivity extends Activity {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 for (ParseObject i : objects){
-                    ListItem item = new ListItem(i.getParseUser("postOwner").getUsername().toString(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
+                    ListItem item = new ListItem(i.getObjectId(), i.getParseUser("postOwner").getUsername().toString(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
 
                     mList.add(item);
                 }

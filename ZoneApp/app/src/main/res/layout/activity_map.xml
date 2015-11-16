@@ -7,21 +7,33 @@
     tools:context="com.zone.zoneapp.Activity.MapActivity"
     android:orientation="vertical"
     >
-
-    <TextView android:text="@string/please_specify_your_location" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/use_google_map_location_button"
-        android:text="@string/use_google_map_location_button_text"
+    <TextView
+        android:text="@string/please_specify_your_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        />
+        android:textSize="25dp"
+        android:layout_gravity="center_horizontal"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/use_google_map_location_button"
+            android:text="@string/use_google_map_location_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="40dp"/>
+        <Button
+            android:id="@+id/cancel_select_location_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_location_from_map_cancel_button_text"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"/>
+    </RelativeLayout>
     <fragment
         android:layout_width="match_parent"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_height="wrap_content"
         android:id="@+id/map"/>
-
-
 </LinearLayout>

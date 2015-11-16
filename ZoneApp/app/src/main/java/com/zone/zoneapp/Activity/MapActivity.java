@@ -25,6 +25,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private static final LatLng GWU = new LatLng(38.90, -77.05);
     private LatLng mSelectedLocation;
     private Button mUseSelectedLocationButton;
+    private Button mCancelButton;
     static final String TAG = "MapActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mUseSelectedLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setLocationResult(mSelectedLocation);;
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("MapLocationLat", mSelectedLocation.latitude);
+                returnIntent.putExtra("MapLocationLng", mSelectedLocation.longitude);
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
-                Log.d(TAG,"button clicked and location " + mSelectedLocation.longitude + "," + mSelectedLocation.latitude +" was sent back");
+                Log.d(TAG,"button clicked and location " + mSelectedLocation.latitude + "," + mSelectedLocation.longitude +" was sent back");
+            }
+        });
+        mCancelButton = (Button) findViewById(R.id.cancel_select_location_button);
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cancelIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED,cancelIntent);
+                finish();
+                Log.d(TAG,"cancel button clicked, no location data returned from the map");
             }
         });
     }
@@ -95,15 +109,5 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 .position(location)
                 .title(getString(R.string.google_map_marker_text)));
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-    }
-
-
-
-    // TODO: 11/14/15 once get location information, call this function to sent result back to create request activity, and finish this page
-    private void setLocationResult(LatLng mapLatLng){
-        Intent i = new Intent();
-        i.putExtra("MapLocationLat",mapLatLng.latitude);
-        i.putExtra("MapLocationLng",mapLatLng.longitude);
-        setResult(CreateRequestActivity.MAPREQUESTCODE, i);
     }
 }

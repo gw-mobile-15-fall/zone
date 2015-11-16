@@ -110,8 +110,6 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
     public void locationFound(Location location) {
         if (mLocation == null){
             mLocation = location;
-            Log.i("aaa", "1");
-
             loadInformation();
         }
 
@@ -132,22 +130,23 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
 
         //find all the posts within 1 mile
         parseQuery.whereWithinMiles("postLocation", parseGeoPoint, 1);
-        Log.i("aaa", "22");
-
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                for (ParseObject i : objects){
-                    Log.i("aaa", i.getParseUser("postOwner").getUsername());
+                if (objects.size()==0){
+                    mProgressDialog.dismiss();
+                    return;
+                }
+                else{
+                    for (ParseObject i : objects){
+                        ListItem item = new ListItem(i.getObjectId(),i.getParseUser("postOwner").getUsername(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
+                        mList.add(item);
+                    }
 
-                    ListItem item = new ListItem(i.getObjectId(),i.getParseUser("postOwner").getUsername(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
-                    Log.i("aaa", "44");
-
-                    mList.add(item);
+                    mProgressDialog.dismiss();
+                    populateListView();
                 }
 
-                mProgressDialog.dismiss();
-                populateListView();
 
 
             }

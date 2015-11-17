@@ -131,6 +131,7 @@ public class LocationFinder implements LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
+        endLocationDetection();
         mLocationDetector.locationFound(location);
 
     }

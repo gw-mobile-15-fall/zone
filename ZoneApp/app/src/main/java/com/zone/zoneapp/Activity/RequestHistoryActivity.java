@@ -1,14 +1,23 @@
 package com.zone.zoneapp.Activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -23,13 +32,14 @@ public class RequestHistoryActivity extends Activity {
 
     private ProgressDialog mProgressDialog;
     private ArrayList<ListItem> mList;
+    private HistoryListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_history);
 
-        mList = new ArrayList<ListItem>();
+
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage(this.getString(R.string.loading));
@@ -42,6 +52,10 @@ public class RequestHistoryActivity extends Activity {
 
     //search all the posts of current user from parse
     private void loadInformation() {
+
+        mList = new ArrayList<ListItem>();
+
+        mAdapter = new HistoryListAdapter();
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Posts");
         query.whereEqualTo("postOwner", user);
@@ -70,8 +84,61 @@ public class RequestHistoryActivity extends Activity {
         //array.add(request2);
         //TODO During practial implementation, the populateListView Method may want to take in an ArrayList as input.
         //eg. refresh the list==> populate using the new list.
-        ArrayAdapter<ListItem> adapter = new MyAdapter(this, R.layout.list_item,mList);
-        requestHistoryListView.setAdapter(adapter);
+
+
+        //ArrayAdapter<ListItem> adapter = new MyAdapter(this, R.layout.list_item,mList);
+        //requestHistoryListView.setAdapter(adapter);
+        requestHistoryListView.setAdapter(mAdapter);
+
+        /**
+        requestHistoryListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final ListItem item = (ListItem)parent.getItemAtPosition(position);
+                new AlertDialog.Builder(RequestHistoryActivity.this)
+                        .setTitle("Request get solved?")
+                        .setMessage("Are you sure you want to delete this entry?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+
+                                ParseQuery<ParseObject> query = ParseQuery.getQuery("Posts");
+                                query.getInBackground(item.getmId(), new GetCallback<ParseObject>() {
+                                    public void done(ParseObject object, ParseException e) {
+                                        if (e == null) {
+                                            // Now let's update it with some new data. In this case, only cheatMode and score
+                                            // will get sent to the Parse Cloud. playerName hasn't changed.
+                                            object.deleteInBackground();
+                                            mList = new ArrayList<ListItem>();
+                                            loadInformation();
+                                        }
+                                    }
+                                });
+
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                                return;
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return false;
+            }
+        });
+         */
+
+        requestHistoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(RequestHistoryActivity.this,RequestDetailActivity.class);
+                i.putExtra("ItemDetail", (ListItem) parent.getItemAtPosition(position));
+                startActivity(i);
+            }
+        });
+
 
     }
 
@@ -95,5 +162,86 @@ public class RequestHistoryActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private class HistoryListAdapter extends ArrayAdapter<ListItem>{
+
+        public HistoryListAdapter() {
+            super(RequestHistoryActivity.this, 0, mList);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            try{
+                if (convertView==null){
+                    convertView = RequestHistoryActivity.this.getLayoutInflater().inflate(R.layout.list_history_item,null);
+                }
+
+                final ListItem item = getItem(position);
+
+
+                TextView time = (TextView)convertView.findViewById(R.id.textview_time);
+                time.setText(item.getTime());
+
+                TextView title = (TextView)convertView.findViewById(R.id.textview_title);
+                title.setText(item.getSubject());
+
+                ImageView deleteButton = (ImageView)convertView.findViewById(R.id.Button_delete);
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new AlertDialog.Builder(RequestHistoryActivity.this)
+                                .setTitle("Request get solved?")
+                                .setMessage("Are you sure you want to delete this entry?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // continue with delete
+
+                                        ParseQuery<ParseObject> q = ParseQuery.getQuery("Responses");
+                                        q.whereEqualTo("postId",item.getmId());
+                                        q.findInBackground(new FindCallback<ParseObject>() {
+                                            @Override
+                                            public void done(List<ParseObject> objects, ParseException e) {
+                                                for (ParseObject o : objects){
+                                                    o.deleteInBackground();
+                                                }
+                                            }
+                                        });
+
+
+                                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Posts");
+                                        query.getInBackground(item.getmId(), new GetCallback<ParseObject>() {
+                                            public void done(ParseObject object, ParseException e) {
+                                                if (e == null) {
+                                                    // Now let's update it with some new data. In this case, only cheatMode and score
+                                                    // will get sent to the Parse Cloud. playerName hasn't changed.
+                                                    object.deleteInBackground();
+                                                    mList.remove(item);
+                                                    mAdapter.notifyDataSetChanged();
+                                                    //loadInformation();
+                                                }
+                                            }
+                                        });
+
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                        return;
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                });
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return convertView;
+        }
     }
 }

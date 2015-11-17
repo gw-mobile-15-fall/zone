@@ -72,6 +72,8 @@
     <string name="title_activity_write_response">WriteResponseActivity</string>
     <string name="submit_label">Submit</string>
     <string name="write_your_response">Write your response</string>
+    <string name="no_nearby_found">No nearby request found.</string>
+    <string name="delete_label">Delete</string>
 
 
 </resources>

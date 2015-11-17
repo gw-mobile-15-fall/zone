@@ -135,6 +135,7 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
             public void done(List<ParseObject> objects, ParseException e) {
                 if (objects.size()==0){
                     mProgressDialog.dismiss();
+                    Toast.makeText(RequestsNearby.this,RequestsNearby.this.getString(R.string.no_nearby_found),Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else{

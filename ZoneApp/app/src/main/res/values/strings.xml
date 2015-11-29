@@ -74,6 +74,7 @@
     <string name="write_your_response">Write your response</string>
     <string name="no_nearby_found">No nearby request found.</string>
     <string name="delete_label">Delete</string>
+    <string name="title_activity_request_detail_map">RequestDetailMapActivity</string>
 
 
 </resources>

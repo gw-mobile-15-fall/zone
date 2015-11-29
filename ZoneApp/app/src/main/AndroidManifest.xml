@@ -122,6 +122,10 @@
             android:label="@string/title_activity_write_response"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".Activity.RequestDetailMapActivity"
+            android:label="@string/title_activity_request_detail_map" >
+        </activity>
     </application>
 
 </manifest>

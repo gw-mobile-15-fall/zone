@@ -39,7 +39,8 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:layout_gravity="right"
-        android:text="@string/show_map_label"/>
+        android:text="@string/show_map_label"
+        />
 
 
     <ListView

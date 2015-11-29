@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class RequestDetailActivity extends AppCompatActivity {
     private ArrayList<Response> mList;
     private ListView mListView;
     private ResponseListAdapter mAdapter;
+    protected Button mShowMapButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class RequestDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
 
 
@@ -70,12 +74,33 @@ public class RequestDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent i = new Intent(RequestDetailActivity.this, WriteResponseActivity.class);
-                i.putExtra("postItem", mItem);
+                i.putExtra("postItem", mItem.getmLatitude());
                 startActivity(i);
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+
+        mShowMapButton = (Button) findViewById(R.id.show_map_Button);
+        mShowMapButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Called when a view has been clicked.
+             *
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RequestDetailActivity.this,RequestDetailMapActivity.class);
+                intent.putExtra("Lat",mItem.getmLatitude());
+                intent.putExtra("Lng",mItem.getmLongitude());
+                intent.putExtra("Subject",mItem.getSubject());
+                startActivity(intent);
+            }
+        });
+
+
+
+
 
         mList = new ArrayList<Response>();
         //Response response = new Response("123","11","hp","body");

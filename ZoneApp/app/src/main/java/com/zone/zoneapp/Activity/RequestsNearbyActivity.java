@@ -26,7 +26,7 @@ import com.zone.zoneapp.utils.LocationFinder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequestsNearby extends AppCompatActivity implements LocationFinder.LocationDetector{
+public class RequestsNearbyActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
 
     private Location mLocation;
     private ProgressDialog mProgressDialog;
@@ -57,6 +57,7 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
     }
 
     private void populateListView(){
+        Log.i("aaa","this is 2");
 
         //ArrayList<ListItem> array = new ArrayList<>();
         //ListItem request1  = new ListItem("GW Hospital","01-01-15", "doctor needed");
@@ -75,7 +76,7 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(RequestsNearby.this,RequestDetailActivity.class);
+                Intent i = new Intent(RequestsNearbyActivity.this,RequestDetailActivity.class);
                 i.putExtra("ItemDetail", (ListItem) parent.getItemAtPosition(position));
                 startActivity(i);
             }
@@ -124,6 +125,7 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
     }
 
     private void loadInformation(){
+        Log.i("aaa","this is ");
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(mLocation.getLatitude(),mLocation.getLongitude());
 
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Posts");
@@ -135,7 +137,7 @@ public class RequestsNearby extends AppCompatActivity implements LocationFinder.
             public void done(List<ParseObject> objects, ParseException e) {
                 if (objects.size()==0){
                     mProgressDialog.dismiss();
-                    Toast.makeText(RequestsNearby.this,RequestsNearby.this.getString(R.string.no_nearby_found),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RequestsNearbyActivity.this,RequestsNearbyActivity.this.getString(R.string.no_nearby_found),Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else{

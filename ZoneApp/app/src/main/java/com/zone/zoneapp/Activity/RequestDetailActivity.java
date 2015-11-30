@@ -1,22 +1,29 @@
 package com.zone.zoneapp.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.model.ListItem;
 import com.zone.zoneapp.model.Response;
@@ -34,6 +41,29 @@ public class RequestDetailActivity extends AppCompatActivity {
     private ResponseListAdapter mAdapter;
     protected Button mShowMapButton;
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_request_detail, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.refesh_button_detail){
+            getList();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +78,46 @@ public class RequestDetailActivity extends AppCompatActivity {
     }
 
     private void getList(){
+        mList = new ArrayList<Response>();
+        mAdapter = new ResponseListAdapter();
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Response response = (Response)parent.getItemAtPosition(position);
+                if (response.getUsername().equals(ParseUser.getCurrentUser().getUsername())){
+                    Toast.makeText(RequestDetailActivity.this,RequestDetailActivity.this.getString(R.string.can_not_add_yourself),Toast.LENGTH_SHORT).show();
+                }
+
+                else{
+
+
+                    new AlertDialog.Builder(RequestDetailActivity.this)
+                            .setTitle("Add to contact")
+                            .setMessage("Add this user to your private contact list?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                    ParseUser parseUser = ParseUser.getCurrentUser();
+                                    parseUser.addUnique("contactList",response.getUsername());
+                                    parseUser.saveInBackground();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                    return;
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+
+
+                }
+
+
+            }
+        });
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Responses");
         query.whereEqualTo("postId", mItem.getmId());
@@ -102,7 +172,6 @@ public class RequestDetailActivity extends AppCompatActivity {
 
 
 
-        mList = new ArrayList<Response>();
         //Response response = new Response("123","11","hp","body");
         //mList.add(response);
 
@@ -114,8 +183,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 
         mListView = (ListView)findViewById(R.id.response_list_container);
 
-        mAdapter = new ResponseListAdapter();
-        mListView.setAdapter(mAdapter);
+
         getList();
 
     }

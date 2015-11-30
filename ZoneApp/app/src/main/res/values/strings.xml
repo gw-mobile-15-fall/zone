@@ -75,6 +75,11 @@
     <string name="no_nearby_found">No nearby request found.</string>
     <string name="delete_label">Delete</string>
     <string name="title_activity_request_detail_map">RequestDetailMapActivity</string>
+    <string name="refresh">refresh</string>
+    <string name="private_message">PRIVATE ZONE</string>
+    <string name="title_activity_private_message">PrivateMessageActivity</string>
+    <string name="my_private_zone">My Private Zone</string>
+    <string name="can_not_add_yourself">Can not add your self!</string>
 
 
 </resources>

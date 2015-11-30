@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
     private Button mNearbyRequset;
     private Button mRequestHistory;
     private Button mEditProfile;
+    private Button mPrivate;
     private Button mLogout;
 
     private Location mCurrentLocation;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.i("aaa", "main activity");
 
         mCurrentLocation = null;
 
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         mNearbyRequset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, RequestsNearby.class);
+                Intent i = new Intent(MainActivity.this, RequestsNearbyActivity.class);
                 i.putExtra(LoginActivity.EXTRA_USERNAME, mUserName);
                 startActivity(i);
             }
@@ -80,6 +83,16 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
                 startActivity(i);
             }
         });
+
+        mPrivate = (Button)findViewById(R.id.private_message_Button);
+        mPrivate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, PrivateMessageActivity.class);
+                startActivity(i);
+            }
+        });
+
 
         mLogout = (Button)findViewById(R.id.logout_Button);
         mLogout.setOnClickListener(new View.OnClickListener() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zone.zoneapp" >
+    package="com.zone.zoneapp">
 
     <permission
         android:name="com.zone.zoneapp.permission.MAPS_RECEIVE"
@@ -34,11 +34,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,40 +47,32 @@
         </activity>
         <activity
             android:name=".Activity.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".Activity.CreateRequestActivity"
             android:label="@string/title_activity_create_request"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activity.UpdateProfileActivity"
             android:label="@string/title_activity_update_profile"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activity.SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activity.FindPasswordActivity"
             android:label="@string/title_activity_find_password"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activity.RequestHistoryActivity"
-            android:label="@string/title_activity_request_history" >
-        </activity>
+            android:label="@string/title_activity_request_history"></activity>
         <activity
-            android:name=".Activity.RequestsNearby"
-            android:label="@string/title_activity_requests_nearby" >
-        </activity>
+            android:name=".Activity.RequestsNearbyActivity"
+            android:label="@string/title_activity_requests_nearby"></activity>
         <activity
             android:name=".Activity.MapActivity"
-            android:label="@string/title_activity_map" >
-        </activity>
+            android:label="@string/title_activity_map"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -93,7 +85,7 @@
 
         <receiver
             android:name="com.parse.ParsePushBroadcastReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
@@ -102,7 +94,7 @@
         </receiver>
         <receiver
             android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -115,17 +107,18 @@
         <activity
             android:name=".Activity.RequestDetailActivity"
             android:label="@string/title_activity_request_detail"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activity.WriteResponseActivity"
             android:label="@string/title_activity_write_response"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activity.RequestDetailMapActivity"
-            android:label="@string/title_activity_request_detail_map" >
-        </activity>
+            android:label="@string/title_activity_request_detail_map"></activity>
+        <activity
+            android:name=".Activity.PrivateMessageActivity"
+            android:label="@string/title_activity_private_message"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -46,6 +46,13 @@
         android:text="@string/edit_profile_button_label"/>
 
     <Button
+        android:id="@+id/private_message_Button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/private_message"/>
+
+    <Button
         android:id="@+id/logout_Button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"

@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
             @Override
             public void onClick(View v) {
                 ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser();
                 Intent i = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(i);
             }
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
     protected void onResume() {
         super.onResume();
         LocationFinder locationFinder = new LocationFinder(this,this);
-        locationFinder.detectLocationMultipleTime();
+        locationFinder.detectLocationOneTime();
     }
 
     @Override

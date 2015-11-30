@@ -29,6 +29,7 @@ import com.zone.zoneapp.model.ListItem;
 import com.zone.zoneapp.model.Response;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RequestDetailActivity extends AppCompatActivity {
@@ -39,7 +40,8 @@ public class RequestDetailActivity extends AppCompatActivity {
     private ArrayList<Response> mList;
     private ListView mListView;
     private ResponseListAdapter mAdapter;
-    protected Button mShowMapButton;
+    private Button mShowMapButton;
+    private ParseUser mCurrentUesr;
 
 
     @Override
@@ -71,6 +73,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mCurrentUesr = ParseUser.getCurrentUser();
 
 
 
@@ -83,7 +86,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
                 final Response response = (Response)parent.getItemAtPosition(position);
                 if (response.getUsername().equals(ParseUser.getCurrentUser().getUsername())){
                     Toast.makeText(RequestDetailActivity.this,RequestDetailActivity.this.getString(R.string.can_not_add_yourself),Toast.LENGTH_SHORT).show();
@@ -98,9 +101,125 @@ public class RequestDetailActivity extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // continue with delete
-                                    ParseUser parseUser = ParseUser.getCurrentUser();
-                                    parseUser.addUnique("contactList",response.getUsername());
-                                    parseUser.saveInBackground();
+
+
+
+
+
+
+                                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Contacts");
+                                    query1.whereEqualTo("currentUser",mCurrentUesr.getEmail());
+
+                                    ParseQuery<ParseObject> query2 = ParseQuery.getQuery("Contacts");
+                                    query2.whereEqualTo("currentUser",response.getUsername());
+
+                                    List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+                                    queries.add(query1);
+                                    queries.add(query2);
+
+                                    ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+                                    mainQuery.findInBackground(new FindCallback<ParseObject>() {
+                                        public void done(List<ParseObject> results, ParseException e) {
+                                            // results has the list of players that win a lot or haven't won much.
+                                            if (results.size()==0){
+                                                ParseObject parseObject1 = new ParseObject("Contacts");
+                                                ParseObject parseObject2 = new ParseObject("Contacts");
+                                                parseObject1.addUnique("contactList",mCurrentUesr.getEmail());
+                                                parseObject1.put("currentUser",response.getUsername());
+                                                parseObject2.addUnique("contactList",response.getUsername());
+                                                parseObject2.put("currentUser",mCurrentUesr.getEmail());
+                                                parseObject1.saveInBackground();
+                                                parseObject2.saveInBackground();
+                                            }
+                                            else{
+                                                for (ParseObject p : results){
+                                                    p.addAllUnique("contactList", Arrays.asList(mCurrentUesr.getEmail(),
+                                                            response.getUsername()));
+                                                    p.saveInBackground();
+                                                }
+                                            }
+
+                                        }
+                                    });
+
+
+
+
+/**
+                                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Contacts");
+
+                                    query.whereEqualTo("currentUser",mCurrentUesr.getEmail());
+                                    query.findInBackground(new FindCallback<ParseObject>() {
+                                        @Override
+                                        public void done(List<ParseObject> objects, ParseException e) {
+                                            if (objects.size()==0){
+                                                ParseObject parseObject = new ParseObject("Contacts");
+                                                parseObject.put("currentUser",mCurrentUesr.getEmail());
+                                                parseObject.addUnique("contactList",response.getUsername());
+                                                parseObject.saveInBackground();
+
+                                            }
+
+                                            else if (objects.size()==1){
+                                                objects.get(0).addUnique("contactList",response.getUsername());
+                                            }
+                                            else {
+                                                return;
+                                            }
+                                        }
+                                    });
+
+                                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Contacts");
+
+                                    query1.whereEqualTo("currentUser",response.getUsername());
+                                    query1.findInBackground(new FindCallback<ParseObject>() {
+                                        @Override
+                                        public void done(List<ParseObject> objects, ParseException e) {
+                                            if (objects.size()==0){
+                                                ParseObject parseObject = new ParseObject("Contacts");
+                                                parseObject.put("currentUser",response.getUsername());
+                                                parseObject.addUnique("contactList",mCurrentUesr.getEmail());
+                                                parseObject.saveInBackground();
+
+                                            }
+
+                                            else if (objects.size()==1){
+                                                objects.get(0).addUnique("contactList",mCurrentUesr.getEmail());
+                                            }
+                                            else {
+                                                return;
+                                            }
+                                        }
+                                    });
+
+                                     */
+
+
+                                    /**
+                                    final ParseUser parseUser = ParseUser.getCurrentUser();
+                                    parseUser.addUnique("contactList", response.getUsername());
+
+
+                                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                                    Log.i("aaa",response.getUsername());
+                                    query.whereEqualTo("email", response.getUsername());
+                                    query.findInBackground(new FindCallback<ParseUser>() {
+                                        public void done(List<ParseUser> objects, ParseException e) {
+                                            if (e == null) {
+                                                // The query was successful.
+                                                Log.i("aaa", objects.get(0).getUsername());
+
+                                                ParseUser user = objects.get(0);
+                                                user.addUnique("contactList,", "this this test");
+                                                user.saveInBackground();
+                                                //parseUser.saveInBackground();
+
+                                            } else {
+                                                // Something went wrong.
+                                            }
+                                        }
+                                    });
+                                     */
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

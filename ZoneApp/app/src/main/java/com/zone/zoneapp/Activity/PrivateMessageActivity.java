@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,10 +13,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PrivateMessageActivity extends AppCompatActivity {
 
@@ -23,6 +29,7 @@ public class PrivateMessageActivity extends AppCompatActivity {
     private ArrayList<String> mList;
     private ContactListAdapter mAdpter;
     private ParseUser mParseUser;
+    private ParseObject mParseObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +51,40 @@ public class PrivateMessageActivity extends AppCompatActivity {
 
         mListView = (ListView)findViewById(R.id.private_message_list_container);
 
+
         mParseUser = ParseUser.getCurrentUser();
-        mList = (ArrayList)mParseUser.getList("contactList");
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Contacts");
+        Log.i("aaa","email"+mParseUser.getEmail());
+        query.whereEqualTo("currentUser", mParseUser.getEmail());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (objects.size()==0){
+                    Log.i("aaa","null"+mParseUser.getEmail());
+
+                    mParseObject = null;
+                    mList = new ArrayList<String>();
+                }
+                else if(objects.size()==1){
+                    Log.i("aaa","foind"+mParseUser.getEmail());
+
+                    mParseObject = objects.get(0);
+                    mList = (ArrayList)mParseObject.getList("contactList");
+                    mList.remove(mParseUser.getEmail());
+                    Log.i("aaa", mList.toString());
+                    populateList();
+
+                }
+            }
+        });
+
+
+
 
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        populateList();
-
-    }
 
     private void populateList(){
 
@@ -91,8 +120,11 @@ public class PrivateMessageActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         mList.remove(getItem(position));
                         mAdpter.notifyDataSetChanged();
-                        mParseUser.remove("contactList");
-                        mParseUser.saveInBackground();
+
+                        //mParseObject.remove("contactList");
+                        //mParseObject.saveInBackground();
+                        //mParseUser.remove("contactList");
+                        //mParseUser.saveInBackground();
 
 
 
@@ -112,6 +144,9 @@ public class PrivateMessageActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mParseUser.addAllUnique("contactList",mList);
+        //mParseUser.addAllUnique("contactList",mList);
+        mParseObject.remove("contactList");
+        mParseObject.addAllUnique("contactList", mList);
+        mParseObject.saveInBackground();
     }
 }

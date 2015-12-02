@@ -19,6 +19,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.model.ListItem;
 import com.zone.zoneapp.utils.LocationFinder;
@@ -125,10 +126,8 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     }
 
     private void loadInformation(){
-        Log.i("aaa","this is ");
 
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(mLocation.getLatitude(),mLocation.getLongitude());
-        Log.i("aaa","this is " + mLocation.getLatitude());
 
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Posts");
 
@@ -138,7 +137,6 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (objects.size()==0){
-                    Log.i("aaa","aaa" + mLocation.getLatitude());
 
                     mProgressDialog.dismiss();
                     Toast.makeText(RequestsNearbyActivity.this,RequestsNearbyActivity.this.getString(R.string.no_nearby_found),Toast.LENGTH_SHORT).show();
@@ -149,16 +147,11 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
 
                     for (ParseObject i : objects){
                         mList = new ArrayList<ListItem>();
-                        Log.i("aaa","this is bbb" + i.getObjectId());
-                        Log.i("aaa","this is bbb" + i.getParseUser("postOwner").getEmail());
-                        Log.i("aaa","this is bbb" + i.getCreatedAt().toString());
-                        Log.i("aaa","this is bbb" + i.getString("postTitle"));
-                        Log.i("aaa","this is bbb" + i.getParseGeoPoint("postLocation").getLatitude()+i.getParseGeoPoint("postLocation").getLongitude());
-                        Log.i("aaa","this is bbb" + i.getString("postText"));
-
-
-                        ListItem item = new ListItem(i.getObjectId(),i.getParseUser("postOwner").getEmail(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
+                        //ParseUser user = (ParseUser)i.get("postOwner");
+                        ListItem item = new ListItem(i.getObjectId(),((ParseUser)i.get("postOwner")).getUsername(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
                         mList.add(item);
+
+
                     }
                     Log.i("aaa","finish");
 

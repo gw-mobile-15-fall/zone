@@ -263,7 +263,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent i = new Intent(RequestDetailActivity.this, WriteResponseActivity.class);
-                i.putExtra("postItem", mItem.getmLatitude());
+                i.putExtra("postItem", mItem);
                 startActivity(i);
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();

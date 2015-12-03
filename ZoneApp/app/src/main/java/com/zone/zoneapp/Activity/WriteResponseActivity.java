@@ -21,7 +21,7 @@ public class WriteResponseActivity extends AppCompatActivity {
     private EditText mTextEditeText;
     private String mText;
     private Response mResponse;
-    private ParseUser mUser;
+    private String mUser;
     private ListItem mItem;
 
     @Override
@@ -44,7 +44,7 @@ public class WriteResponseActivity extends AppCompatActivity {
         });
 
         mTextEditeText = (EditText)findViewById(R.id.write_response);
-        mUser = ParseUser.getCurrentUser();
+        mUser = ParseUser.getCurrentUser().getEmail();
         mResponse = null;
         mTextEditeText.addTextChangedListener(new TextWatcher() {
             @Override

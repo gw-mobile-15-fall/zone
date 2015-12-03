@@ -195,7 +195,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(mLocation.getLatitude(), mLocation.getLongitude());
         parseObject.put("postLocation", parseGeoPoint);
         parseObject.put("postText", mDesciption);
-        parseObject.put("postOwner", ParseUser.getCurrentUser());
+        parseObject.put("postOwner", ParseUser.getCurrentUser().getEmail());
         parseObject.put("postTitle", mTitle);
         parseObject.saveInBackground();
     }

@@ -4,24 +4,14 @@ package com.zone.zoneapp.model;
  * Created by hpishepei on 11/16/15.
  */
 public class Response {
-    private String id;
+    private String userId;
     private String time;
-    private String username;
     private String text;
 
-    public Response(String id, String time, String username, String text){
-        this.id = id;
+    public Response(String id, String time, String text){
+        this.userId = id;
         this.text = text;
         this.time = time;
-        this.username = username;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getText() {
@@ -40,12 +30,11 @@ public class Response {
         this.time = time;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
-
 }

@@ -63,8 +63,8 @@ public class PrivateMessageActivity extends AppCompatActivity {
                 if (objects.size()==0){
                     Log.i("aaa","null"+mParseUser.getEmail());
 
-                    mParseObject = null;
                     mList = new ArrayList<String>();
+                    mParseObject = null;
                 }
                 else if(objects.size()==1){
                     Log.i("aaa","foind"+mParseUser.getEmail());
@@ -144,9 +144,11 @@ public class PrivateMessageActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //mParseUser.addAllUnique("contactList",mList);
-        mParseObject.remove("contactList");
-        mParseObject.addAllUnique("contactList", mList);
-        mParseObject.saveInBackground();
+        if (mParseObject != null && mParseObject.getList("contactList").size()!=0){
+            mParseObject.remove("contactList");
+            mParseObject.addAllUnique("contactList", mList);
+            mParseObject.saveInBackground();
+        }
+
     }
 }

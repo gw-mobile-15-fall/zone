@@ -88,7 +88,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
                 final Response response = (Response)parent.getItemAtPosition(position);
-                if (response.getUsername().equals(ParseUser.getCurrentUser().getUsername())){
+                if (response.getUserId().equals(ParseUser.getCurrentUser().getUsername())){
                     Toast.makeText(RequestDetailActivity.this,RequestDetailActivity.this.getString(R.string.can_not_add_yourself),Toast.LENGTH_SHORT).show();
                 }
 
@@ -111,7 +111,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                                     query1.whereEqualTo("currentUser",mCurrentUesr.getEmail());
 
                                     ParseQuery<ParseObject> query2 = ParseQuery.getQuery("Contacts");
-                                    query2.whereEqualTo("currentUser",response.getUsername());
+                                    query2.whereEqualTo("currentUser",response.getUserId());
 
                                     List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
                                     queries.add(query1);
@@ -125,8 +125,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                                                 ParseObject parseObject1 = new ParseObject("Contacts");
                                                 ParseObject parseObject2 = new ParseObject("Contacts");
                                                 parseObject1.addUnique("contactList",mCurrentUesr.getEmail());
-                                                parseObject1.put("currentUser",response.getUsername());
-                                                parseObject2.addUnique("contactList",response.getUsername());
+                                                parseObject1.put("currentUser",response.getUserId());
+                                                parseObject2.addUnique("contactList",response.getUserId());
                                                 parseObject2.put("currentUser",mCurrentUesr.getEmail());
                                                 parseObject1.saveInBackground();
                                                 parseObject2.saveInBackground();
@@ -134,7 +134,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                                             else{
                                                 for (ParseObject p : results){
                                                     p.addAllUnique("contactList", Arrays.asList(mCurrentUesr.getEmail(),
-                                                            response.getUsername()));
+                                                            response.getUserId()));
                                                     p.saveInBackground();
                                                 }
                                             }
@@ -245,7 +245,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 for (ParseObject i : objects) {
-                    Response response = new Response(i.getString("userId"),i.getCreatedAt().toString(),i.getParseUser("userId").getUsername(),i.getString("text"));
+                    Response response = new Response(i.getString("userId"), i.getCreatedAt().toString(), i.getString("text"));
                     mList.add(response);
                 }
                 mAdapter.notifyDataSetChanged();
@@ -325,7 +325,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 
 
                 TextView username = (TextView)convertView.findViewById(R.id.response_user_name);
-                username.setText(response.getUsername());
+                username.setText(response.getUserId());
 
                 TextView time = (TextView)convertView.findViewById(R.id.response_time);
                 time.setText(response.getTime());

@@ -58,12 +58,12 @@ public class RequestHistoryActivity extends Activity {
         mAdapter = new HistoryListAdapter();
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Posts");
-        query.whereEqualTo("postOwner", user);
+        query.whereEqualTo("postOwner", user.getEmail());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 for (ParseObject i : objects){
-                    ListItem item = new ListItem(i.getObjectId(), i.getParseUser("postOwner").getUsername().toString(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
+                    ListItem item = new ListItem(i.getObjectId(), i.getString("postOwner"),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
 
                     mList.add(item);
                 }

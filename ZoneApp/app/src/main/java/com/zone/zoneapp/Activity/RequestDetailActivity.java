@@ -270,7 +270,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             }
         });
 
-        mShowMapButton = (Button) findViewById(R.id.show_map_Button);
+        mShowMapButton = (Button) findViewById(R.id.show_map_button);
         mShowMapButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Called when a view has been clicked.

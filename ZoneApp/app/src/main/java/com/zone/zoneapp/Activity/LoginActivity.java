@@ -19,23 +19,45 @@ import com.zone.zoneapp.R;
 import com.zone.zoneapp.model.UserAccount;
 
 public class LoginActivity extends AppCompatActivity{
-
-    EditText mUsernameEditText;
-    EditText mPasswordEditText;
-    Button mSignInButton;
-    Button mForgetButton;
-    Button mCreateButton;
-    UserAccount user;
-
+    private EditText mUserNameEditText;
+    private EditText mPasswordEditText;
+    private Button mSignInButton;
+    private Button mForgetButton;
+    private Button mCreateButton;
+    private UserAccount mUser;
+    private static final String TAG = "LoginActivity";
     public static final String EXTRA_USERNAME = "com.zone.app.username";
-    
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "Login Activity Launched");
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        /*
+        check if there is a user in the current session
+        if so, login directly and lead user to the homepage of the app
+        otherwise, just take the user to the login page
+         */
+        if (currentUser != null) {
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+        } else {
+            /*
+            we chose not to even wire things up unless
+            if there is a login session, whcih should potentially
+            save some headovers
+             */
+            setContentView(R.layout.activity_login);
+            // initializeView will wire things up and set up
+            // the functions of all buttons and edit-texts
+            initializeView();
+        }
+    }
 
-    private void updateView(){
-        user = new UserAccount();
-
-        mUsernameEditText = (EditText)findViewById(R.id.login_username_EditText);
-        mUsernameEditText.addTextChangedListener(new TextWatcher() {
+    private void initializeView(){
+        mUser = new UserAccount();
+        mUserNameEditText = (EditText)findViewById(R.id.login_username_EditText);
+        mUserNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -43,7 +65,7 @@ public class LoginActivity extends AppCompatActivity{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                user.setUserName(s.toString());
+                mUser.setUserName(s.toString());
             }
 
             @Override
@@ -62,7 +84,7 @@ public class LoginActivity extends AppCompatActivity{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                user.setPassword(s.toString());
+                mUser.setPassword(s.toString());
             }
 
             @Override
@@ -76,11 +98,14 @@ public class LoginActivity extends AppCompatActivity{
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
-
+                String username = mUserNameEditText.getText().toString().trim();
+                String password = mPasswordEditText.getText().toString().trim();
+                if (InputIsValid(username,password)) {
+                    Log.d(TAG,"input is valid, trying to log in");
+                    login(username,password);
+                }
             }
         });
-
 
         mForgetButton = (Button)findViewById(R.id.forget_password_Button);
         mForgetButton.setOnClickListener(new View.OnClickListener() {
@@ -100,90 +125,49 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.i("aaa", "login activity");
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
-
-        if (currentUser != null) {
-            // do stuff with the user
-            //Log.i("aaa", currentUser.getUsername());
-
-            Intent i = new Intent(this,MainActivity.class);
-            startActivity(i);
-
-        } else {
-            // show the signup or login screen
-            setContentView(R.layout.activity_login);
-
-            updateView();
-        }
-
-
-
-
-
-    }
-    private void login() {
-        final String username = mUsernameEditText.getText().toString().trim();
-        String password = mPasswordEditText.getText().toString().trim();
-
-        // Validate the log in data
-        boolean validationError = false;
-        StringBuilder validationErrorMessage = new StringBuilder(getString(R.string.error_intro));
+    // Validate the data in the login fields (in case it's blank) before passing them to Parse
+    private Boolean InputIsValid(String username, String password){
         if (username.length() == 0) {
-            validationError = true;
-            validationErrorMessage.append(getString(R.string.error_blank_username));
+            Toast.makeText(LoginActivity.this, getString(R.string.error_blank_username), Toast.LENGTH_LONG).show();
+            return false;
         }
-        if (password.length() == 0) {
-            if (validationError) {
-                validationErrorMessage.append(getString(R.string.error_join));
-            }
-            validationError = true;
-            validationErrorMessage.append(getString(R.string.error_blank_password));
+        else if (password.length() == 0) {
+            Toast.makeText(LoginActivity.this, getString(R.string.error_blank_password), Toast.LENGTH_LONG).show();
+            return false;
         }
-        validationErrorMessage.append(getString(R.string.error_end));
-
-
-        if (validationError) {
-            Toast.makeText(LoginActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG)
-                    .show();
-            return;
+        else{
+            return true;
         }
-
-        if (validationError==false){
-            // Set up a progress dialog
-            final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
-            dialog.setMessage(getString(R.string.progress_login));
-            dialog.show();
-            // Call the Parse login method
-            ParseUser.logInInBackground(username, password, new LogInCallback() {
-                @Override
-                public void done(ParseUser user, ParseException e) {
-                    dialog.dismiss();
-                    if (user != null) {
-
-                        //LocationFinder locationFinder = new LocationFinder(LoginActivity.this,LoginActivity.this);
-                        //locationFinder.detectLocationOneTime();
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        //i.putExtra(EXTRA_USERNAME, username);
-                        startActivity(i);
+    }
 
 
-                        //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        //startActivity(intent);
-
-                    } else {
-                        // Show the error message
-                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                        updateView();
+    // login with the data in the two edit-texts
+    private void login(String username, String password) {
+        // Set up a progress dialog while waiting for the login
+        final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+        dialog.setMessage(getString(R.string.progress_login));
+        dialog.show();
+        // Call the Parse login method
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                // close the progress dialog
+                dialog.dismiss();
+                if (e == null && user != null) {
+                    // Login is successful
+                    Log.d(TAG, "Logged-in successfully");
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    // Login failed
+                    Log.d(TAG, "Login failed due to " + e.getMessage());
+                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    // clear up the two edit texts
+                    mPasswordEditText.setText("");
+                    mUserNameEditText.setText("");
                     }
                 }
             });
         }
-
     }
-
-}

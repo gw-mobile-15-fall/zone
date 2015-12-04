@@ -1,5 +1,6 @@
 package com.zone.zoneapp.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -55,19 +57,16 @@ public class PrivateMessageActivity extends AppCompatActivity {
         mParseUser = ParseUser.getCurrentUser();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Contacts");
-        Log.i("aaa","email"+mParseUser.getEmail());
         query.whereEqualTo("currentUser", mParseUser.getEmail());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (objects.size()==0){
-                    Log.i("aaa","null"+mParseUser.getEmail());
 
                     mList = new ArrayList<String>();
                     mParseObject = null;
                 }
                 else if(objects.size()==1){
-                    Log.i("aaa","foind"+mParseUser.getEmail());
 
                     mParseObject = objects.get(0);
                     mList = (ArrayList)mParseObject.getList("contactList");
@@ -90,6 +89,16 @@ public class PrivateMessageActivity extends AppCompatActivity {
 
         mAdpter = new ContactListAdapter();
         mListView.setAdapter(mAdpter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(PrivateMessageActivity.this, PrivateChattingActivity.class);
+                i.putExtra("PRIAVATE_CHATTING_WITH",(String)parent.getItemAtPosition(position));
+                startActivity(i);
+            }
+        });
+
 
     }
 

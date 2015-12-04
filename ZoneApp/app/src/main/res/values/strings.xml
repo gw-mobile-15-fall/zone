@@ -80,6 +80,7 @@
     <string name="title_activity_private_message">PrivateMessageActivity</string>
     <string name="my_private_zone">My Private Zone</string>
     <string name="can_not_add_yourself">Can not add your self!</string>
+    <string name="title_activity_private_chatting">PrivateChattingActivity</string>
 
 
 </resources>

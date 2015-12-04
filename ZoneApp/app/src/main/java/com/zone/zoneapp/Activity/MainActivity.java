@@ -48,7 +48,10 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, CreateRequestActivity.class);
-                i.putExtra(LoginActivity.EXTRA_USERNAME, mUserName);
+                Bundle data = new Bundle();
+                data.putDouble("currentLat",mCurrentLocation.getLatitude());
+                data.putDouble("currentLng",mCurrentLocation.getLongitude());
+                i.putExtras(data);
                 startActivity(i);
             }
         });
@@ -115,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
           */
         LocationFinder locationFinder = new LocationFinder(this,this);
         locationFinder.detectLocationOneTime();
+
     }
 
     @Override
@@ -123,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         /*
         when a location was found,
         if the mCurrentLocation has no value we will assign this location to the mCurrentLocation and store it to Parse
-        if the mCurrentLocation has the save value as the newly detected location, we save the trouble of uploading it to Parse
+        if the mCurrentLocation has the same value as the newly detected location, we save the trouble of uploading it to Parse
          */
         if (mCurrentLocation == null){
             Log.d(TAG,"the user has no location history, store the new location to Parse");

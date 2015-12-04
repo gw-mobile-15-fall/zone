@@ -23,7 +23,6 @@ import com.zone.zoneapp.R;
 import com.zone.zoneapp.utils.LocationFinder;
 
 public class CreateRequestActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
-    public static final String LOCATION_INTENT = "selectedLocation";
     public static final int MAP_REQUEST_CODE = 12314;
     public static final String TAG = "CreateRequest";
 
@@ -121,6 +120,8 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(CreateRequestActivity.this, MapActivity.class);
+                Bundle locationData = getIntent().getExtras();
+                i.putExtras(locationData);
                 startActivityForResult(i, MAP_REQUEST_CODE);
             }
         });
@@ -129,13 +130,18 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         mCurrentLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mLocation = new Location("");
+                Bundle locationData = getIntent().getExtras();
+                mLocation.setLatitude(locationData.getDouble("currentLat"));
+                mLocation.setLongitude(locationData.getDouble("currentLng"));
+                mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
+//                mProgressDislog.setIndeterminate(true);
+//                mProgressDislog.setMessage(CreateRequestActivity.this.getString(R.string.fetching_current_location));
+//                mProgressDislog.show();
+//
+//                LocationFinder locationFinder = new LocationFinder(CreateRequestActivity.this, CreateRequestActivity.this);
+//                locationFinder.detectLocationOneTime();
 
-                mProgressDislog.setIndeterminate(true);
-                mProgressDislog.setMessage(CreateRequestActivity.this.getString(R.string.fetching_current_location));
-                mProgressDislog.show();
-
-                LocationFinder locationFinder = new LocationFinder(CreateRequestActivity.this, CreateRequestActivity.this);
-                locationFinder.detectLocationOneTime();
             }
         });
 
@@ -206,9 +212,9 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         if (requestCode == MAP_REQUEST_CODE){
             if (resultCode==Activity.RESULT_OK){
                 mLocation = new Location("");
-                //TODO: better fallback location for extracting results from the mapActivity than lat = 0 and lng =0?
-                Double lat = data.getDoubleExtra("MapLocationLat",0);
-                Double lng = data.getDoubleExtra("MapLocationLng",0);
+                Bundle mapLocationData = data.getExtras();
+                Double lat = mapLocationData.getDouble("MapLocationLat");
+                Double lng = mapLocationData.getDouble("MapLocationLng");
                 mLocation.setLongitude(lng);
                 mLocation.setLatitude(lat);
                 Log.d(TAG,"new location returned from the map at " + lat + "," + lng);
@@ -219,7 +225,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
                 return;
             }
             else {
-                Log.d(TAG, "neither cancel button nor use location button was clicked. Something weid must have happened");
+                Log.d(TAG, "neither cancel button nor use location button was clicked. back button was hit?");
                 return;
             }
         }

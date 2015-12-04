@@ -1,9 +1,7 @@
 package com.zone.zoneapp.Activity;
 
 import android.app.Activity;
-import android.app.Instrumentation;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -27,22 +25,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private Button mUseSelectedLocationButton;
     private Button mCancelButton;
     static final String TAG = "MapActivity";
+    private LatLng mCurrentLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         MapFragment mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
-        //The default location is nothing is specified. A better default location might be the current location?
-        //TODO possibility of implementing a search input field where you can search the location on google map?
-        mSelectedLocation = new LatLng(GWU.latitude,GWU.longitude);
+        Bundle locationData = getIntent().getExtras();
+        Double currentLat = locationData.getDouble("currentLat");
+        Double currentLng = locationData.getDouble("currentLng");
+        mCurrentLocation = new LatLng(currentLat,currentLng);
+        mSelectedLocation = mCurrentLocation;
         mUseSelectedLocationButton = (Button) findViewById(R.id.use_google_map_location_button);
         mUseSelectedLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("MapLocationLat", mSelectedLocation.latitude);
-                returnIntent.putExtra("MapLocationLng", mSelectedLocation.longitude);
+                Bundle mapLocationData = new Bundle();
+                mapLocationData.putDouble("MapLocationLat", mSelectedLocation.latitude);
+                mapLocationData.putDouble("MapLocationLng", mSelectedLocation.longitude);
+                returnIntent.putExtras(mapLocationData);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
                 Log.d(TAG,"button clicked and location " + mSelectedLocation.latitude + "," + mSelectedLocation.longitude +" was sent back");
@@ -86,7 +89,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        focusOnLocation(GWU,googleMap);
+        focusOnLocation(mCurrentLocation,googleMap);
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
             @Override
             public void onMapClick(LatLng clickedLocation) {
@@ -95,8 +98,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 Log.d(TAG,"new location selected at "+ mSelectedLocation.latitude + "," + mSelectedLocation.longitude);
             }
         });
-
-
     }
 
     private void focusOnLocation(LatLng location, GoogleMap googleMap){

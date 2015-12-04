@@ -47,8 +47,10 @@ public class LoginActivity extends AppCompatActivity{
             session, which should potentially save some overheads
              */
             setContentView(R.layout.activity_login);
-            // initializeView will wire things up and set up
-            // the functions of all buttons and edit-texts
+            /*
+             initializeView will wire things up and set up
+             the functions of all buttons and edit-texts
+              */
             initializeView();
         }
     }

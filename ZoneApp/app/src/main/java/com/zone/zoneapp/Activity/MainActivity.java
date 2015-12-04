@@ -25,15 +25,14 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
     private Button mEditProfile;
     private Button mPrivate;
     private Button mLogout;
-
+    private final String TAG = "MainActivity";
     private Location mCurrentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.i("aaa", "main activity");
-
+        Log.i(TAG, "main activity launched");
         mCurrentLocation = null;
 
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -110,13 +109,24 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
     @Override
     protected void onResume() {
         super.onResume();
+        /*
+         the following location functions are to report
+         users current location to the Parse backend
+          */
         LocationFinder locationFinder = new LocationFinder(this,this);
         locationFinder.detectLocationOneTime();
     }
 
     @Override
     public void locationFound(Location location) {
+        Log.d(TAG,"new location found");
+        /*
+        when a location was found,
+        if the mCurrentLocation has no value we will assign this location to the mCurrentLocation and store it to Parse
+        if the mCurrentLocation has the save value as the newly detected location, we save the trouble of uploading it to Parse
+         */
         if (mCurrentLocation == null){
+            Log.d(TAG,"the user has no location history, store the new location to Parse");
             mCurrentLocation = location;
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (currentUser!=null){
@@ -124,10 +134,8 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
                 currentUser.put("location",parseGeoPoint);
                 currentUser.saveInBackground();
             }
-        }
-
-        //prevent duplicate location update from storing into database
-        else if(location.getLatitude()!=mCurrentLocation.getLatitude() && location.getLongitude()!=mCurrentLocation.getLongitude()){
+        } else if (location.getLatitude()!=mCurrentLocation.getLatitude() || location.getLongitude()!=mCurrentLocation.getLongitude()){
+            Log.d(TAG,"the user's current location is different from it was last time, store the new location to Parse");
             mCurrentLocation = location;
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (currentUser!=null){
@@ -135,12 +143,13 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
                 currentUser.put("location",parseGeoPoint);
                 currentUser.saveInBackground();
             }
+        } else {
+            Log.d(TAG, "apparently the user's current location is the same as it was found last time, no need to save to Parse");
         }
-
     }
 
     @Override
     public void locationNotFound(LocationFinder.FailureReason failureReason) {
-
+        Log.d(TAG,"Failed to find the user's current location due to "+ failureReason.toString());
     }
 }

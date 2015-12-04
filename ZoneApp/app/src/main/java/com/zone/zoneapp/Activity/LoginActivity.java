@@ -43,9 +43,8 @@ public class LoginActivity extends AppCompatActivity{
             startActivity(intent);
         } else {
             /*
-            we chose not to even wire things up unless
-            if there is a login session, whcih should potentially
-            save some headovers
+            we chose not to even wire things up if there is a login
+            session, which should potentially save some overheads
              */
             setContentView(R.layout.activity_login);
             // initializeView will wire things up and set up
@@ -111,8 +110,8 @@ public class LoginActivity extends AppCompatActivity{
         mForgetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, FindPasswordActivity.class);
-                startActivity(i);
+                Intent intent = new Intent(LoginActivity.this, FindPasswordActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -120,8 +119,8 @@ public class LoginActivity extends AppCompatActivity{
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(i);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
     }

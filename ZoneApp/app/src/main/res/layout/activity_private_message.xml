@@ -1,34 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.zone.zoneapp.Activity.PrivateMessageActivity">
+    android:orientation="vertical"
+    >
 
-    <android.support.design.widget.AppBarLayout
+    <TextView
+        android:id="@+id/title_my_private_zone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/my_private_zone"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:gravity="center_horizontal"/>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    </android.support.design.widget.AppBarLayout>
+    <ListView
+        android:id="@+id/list_chatting"
+        android:layout_below="@id/title_my_private_zone"
+        android:layout_marginTop="8dp"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:transcriptMode="alwaysScroll"
+        />
 
-    <include layout="@layout/content_private_message" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/chat_with_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/list_chatting"
+        android:text="Chatting with"
+        android:textStyle="bold|italic"
+        android:textSize="14sp"
+        />
 
-</android.support.design.widget.CoordinatorLayout>
+
+
+    <ListView
+        android:layout_below="@id/chat_with_title"
+        android:id="@+id/private_message_list_container"
+        android:layout_width="wrap_content"
+        android:layout_height="130dp"
+        android:layout_above="@+id/listFooter"
+        >
+
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/listFooter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+
+
+        >
+
+        <EditText
+            android:id="@+id/messageInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="textShortMessage"
+            android:lines="1"
+            android:singleLine="true" />
+
+        <ImageButton
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_send" />
+    </LinearLayout>
+
+</RelativeLayout>

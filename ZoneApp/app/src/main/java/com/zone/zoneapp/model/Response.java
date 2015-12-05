@@ -5,13 +5,15 @@ package com.zone.zoneapp.model;
  */
 public class Response {
     private String userId;
+    private String userEmail;
     private String time;
     private String text;
 
-    public Response(String id, String time, String text){
+    public Response(String id, String email, String time, String text){
         this.userId = id;
         this.text = text;
         this.time = time;
+        this.userEmail = email;
     }
 
     public String getText() {
@@ -36,5 +38,13 @@ public class Response {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

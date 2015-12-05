@@ -1,3 +1,4 @@
+/**
 package com.zone.zoneapp.Activity;
 
 import android.app.ListActivity;
@@ -122,3 +123,4 @@ public class PrivateChattingActivity extends ListActivity {
         }
     }
 }
+*/

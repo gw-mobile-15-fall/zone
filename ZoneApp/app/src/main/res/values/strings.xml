@@ -81,6 +81,7 @@
     <string name="my_private_zone">My Private Zone</string>
     <string name="can_not_add_yourself">Can not add your self!</string>
     <string name="title_activity_private_chatting">PrivateChattingActivity</string>
+    <string name="select_first">Please select a user to chat with first.</string>
 
 
 </resources>

@@ -21,8 +21,9 @@ public class WriteResponseActivity extends AppCompatActivity {
     private EditText mTextEditeText;
     private String mText;
     private Response mResponse;
-    private String mUser;
+    private String mUserEmail;
     private ListItem mItem;
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,8 @@ public class WriteResponseActivity extends AppCompatActivity {
         });
 
         mTextEditeText = (EditText)findViewById(R.id.write_response);
-        mUser = ParseUser.getCurrentUser().getEmail();
+        mUserEmail = ParseUser.getCurrentUser().getEmail();
+        mUserId = ParseUser.getCurrentUser().getObjectId();
         mResponse = null;
         mTextEditeText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -66,7 +68,8 @@ public class WriteResponseActivity extends AppCompatActivity {
 
     private void addResponse(){
         ParseObject parseObject = new ParseObject("Responses");
-        parseObject.put("userId", mUser);
+        parseObject.put("userEmail", mUserEmail);
+        parseObject.put("userId", mUserId);
         parseObject.put("postId", mItem.getmId());
         parseObject.put("text",mText);
 

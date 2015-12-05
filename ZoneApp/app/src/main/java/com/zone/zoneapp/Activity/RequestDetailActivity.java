@@ -111,7 +111,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                                     query1.whereEqualTo("currentUser",mCurrentUesr.getEmail());
 
                                     ParseQuery<ParseObject> query2 = ParseQuery.getQuery("Contacts");
-                                    query2.whereEqualTo("currentUser",response.getUserId());
+                                    query2.whereEqualTo("currentUser",response.getUserEmail());
 
                                     List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
                                     queries.add(query1);

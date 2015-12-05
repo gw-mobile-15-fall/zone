@@ -63,6 +63,7 @@ public class PrivateMessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_message);
+        Log.i("aaa", "here");
 
         mFireBaseRef = new Firebase("https://zone-app.firebaseio.com/");
 
@@ -103,8 +104,10 @@ public class PrivateMessageActivity extends AppCompatActivity {
             }
         });
 
+        Log.i("aaa", "here1");
 
         mParseUser = ParseUser.getCurrentUser();
+        Log.i("aaa", "here2");
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Contacts");
         query.whereEqualTo("currentUser", mParseUser.getEmail());
@@ -113,10 +116,12 @@ public class PrivateMessageActivity extends AppCompatActivity {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (objects.size()==0){
 
-                    mList = new ArrayList<IdEmailPair>();
+                    Log.i("aaa","not contat");
+                    mList.clear();
                     mParseObject = null;
                 }
-                else if(objects.size()==1){
+                else if(objects.size()!=0){
+                    Log.i("aaa","have contact");
 
                     mParseObject = objects.get(0);
 
@@ -148,6 +153,7 @@ public class PrivateMessageActivity extends AppCompatActivity {
 
     private void populateList(){
 
+        Log.i("aaa",mList.toString());
         //mChatList = new ArrayList<>();
 
 

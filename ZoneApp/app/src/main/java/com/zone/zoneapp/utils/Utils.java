@@ -1,6 +1,7 @@
 package com.zone.zoneapp.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -39,7 +40,13 @@ public class Utils {
         Double lat = Double.parseDouble(placeDetails.get("result").getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lat").getAsString());
         Double lng = Double.parseDouble(placeDetails.get("result").getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lng").getAsString());
         result = new LatLng(lat,lng);
-        Log.d(TAG,"place detail retrieved");
+        Log.d(TAG, "place detail retrieved");
         return result;
+    }
+
+    private boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
     }
 }

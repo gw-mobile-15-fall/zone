@@ -53,7 +53,6 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         mLocation = null;
         mProgressDislog = new ProgressDialog(this);
 
-
         mTit = (EditText)findViewById(R.id.request_Title_EditText);
         mDes = (EditText)findViewById(R.id.request_description_EditText);
         mMapLoc = (Button)findViewById(R.id.find_location_on_google_map);

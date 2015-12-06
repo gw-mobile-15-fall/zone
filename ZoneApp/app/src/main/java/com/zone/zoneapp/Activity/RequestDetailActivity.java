@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -104,6 +105,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 
 
 
+                                    Log.i("aaa","hererererere");
 
 
 
@@ -124,17 +126,39 @@ public class RequestDetailActivity extends AppCompatActivity {
                                                 ParseObject parseObject1 = new ParseObject("Contacts");
                                                 ParseObject parseObject2 = new ParseObject("Contacts");
                                                 parseObject1.addUnique("contactList",mCurrentUesr.getEmail()+"-"+mCurrentUesr.getObjectId());
-                                                parseObject1.put("currentUser",response.getUserEmail());
-                                                parseObject2.addUnique("contactList",response.getUserEmail()+"-"+response.getUserId());
+                                                parseObject1.put("currentUser", response.getUserEmail());
+                                                parseObject2.addUnique("contactList", response.getUserEmail() + "-" + response.getUserId());
                                                 parseObject2.put("currentUser",mCurrentUesr.getEmail());
                                                 parseObject1.saveInBackground();
                                                 parseObject2.saveInBackground();
                                             }
-                                            else{
+
+                                            else if(results.size()==1){
+                                                results.get(0).addAllUnique("contactList", Arrays.asList(mCurrentUesr.getEmail() + "-" + mCurrentUesr.getObjectId(),
+                                                        response.getUserEmail() + "-" + response.getUserId()));
+                                                results.get(0).saveInBackground();
+
+                                                if (results.get(0).getString("currentUser").equals(response.getUserEmail())){
+                                                    ParseObject parseObject = new ParseObject("Contacts");
+                                                    parseObject.put("currentUser", mCurrentUesr.getEmail());
+                                                    parseObject.addUnique("contactList", response.getUserEmail() + "-" + response.getUserId());
+                                                    parseObject.saveInBackground();
+                                                }
+                                                else {
+                                                    ParseObject parseObject = new ParseObject("Contacts");
+                                                    parseObject.put("currentUser", response.getUserEmail());
+                                                    parseObject.addUnique("contactList", mCurrentUesr.getEmail() + "-" + mCurrentUesr.getObjectId());
+                                                    parseObject.saveInBackground();
+                                                }
+
+                                            }
+
+                                            else if (results.size()==2){
                                                 for (ParseObject p : results){
-                                                    p.addAllUnique("contactList", Arrays.asList(mCurrentUesr.getEmail()+"-"+mCurrentUesr.getObjectId(),
-                                                            response.getUserEmail()+"-"+response.getUserId()));
+                                                    p.addAllUnique("contactList", Arrays.asList(mCurrentUesr.getEmail() + "-" + mCurrentUesr.getObjectId(),
+                                                            response.getUserEmail() + "-" + response.getUserId()));
                                                     p.saveInBackground();
+
                                                 }
                                             }
 

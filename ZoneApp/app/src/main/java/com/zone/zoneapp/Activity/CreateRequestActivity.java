@@ -168,10 +168,6 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        return;
-    }
 
     @Override
     public void locationFound(Location location) {

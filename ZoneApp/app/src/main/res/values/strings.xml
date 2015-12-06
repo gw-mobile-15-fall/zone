@@ -89,5 +89,6 @@
     <string name="change_radius">Change searching radius (mile)</string>
     <string name="set_email">Set email</string>
     <string name="set_email_to_this_user">Do you want to send email to this user?</string>
+    <string name="action_bar_update_profile_text">Update Profile</string>
 
 </resources>

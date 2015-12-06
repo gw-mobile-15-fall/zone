@@ -25,7 +25,7 @@ public class Utils {
         Iterator it = value.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            parseObject.put((String) pair.getKey(), (String) pair.getValue());
+            parseObject.put((String) pair.getKey(), pair.getValue());
             it.remove(); // avoids a ConcurrentModificationException
         }
         Log.i("aaa","save");
@@ -33,18 +33,13 @@ public class Utils {
     }
 
     public static LatLng getLatLngFromPlaceId(String placeId, Context context) throws ExecutionException, InterruptedException {
-        LatLng result = null;
-//        try{
-            String url = BASE_URL + Constants.GOOGLE_PLACES_SERVER_API_KEY + PLACE_URL + placeId;
-            JsonObject placeDetails = Ion.with(context).load(url).asJsonObject().get();
-            Double lat = Double.parseDouble(placeDetails.get("result").getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lat").getAsString());
-            Double lng = Double.parseDouble(placeDetails.get("result").getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lng").getAsString());
-            result = new LatLng(lat,lng);
-            Log.d(TAG,"place detail retrieved");
-//        } catch (Exception e){
-//        // TODO handle the exception with log or toast
-//            Log.d(TAG,"failed to get the place details");
-//        }
+        LatLng result;
+        String url = BASE_URL + Constants.GOOGLE_PLACES_SERVER_API_KEY + PLACE_URL + placeId;
+        JsonObject placeDetails = Ion.with(context).load(url).asJsonObject().get();
+        Double lat = Double.parseDouble(placeDetails.get("result").getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lat").getAsString());
+        Double lng = Double.parseDouble(placeDetails.get("result").getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lng").getAsString());
+        result = new LatLng(lat,lng);
+        Log.d(TAG,"place detail retrieved");
         return result;
     }
 }

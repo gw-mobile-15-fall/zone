@@ -86,7 +86,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
             ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
             mainQuery.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> results, ParseException e) {
-                    // results has the list of players that win a lot or haven't won much.
                     if (results.size() == 0) {
                         mCurrentUser.setUsername(username);
                         mCurrentUser.setEmail(email);

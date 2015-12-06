@@ -15,10 +15,10 @@ import java.util.ArrayList;
 /**
  * Created by YangLiu on 10/4/2015.
  */
-public class MyAdapter extends ArrayAdapter<ListItem>{
+public class MyListViewAdapter extends ArrayAdapter<ListItem>{
     private ArrayList<ListItem> items;
 
-    public MyAdapter(Context context, int textViewResourceId, ArrayList<ListItem> items) {
+    public MyListViewAdapter(Context context, int textViewResourceId, ArrayList<ListItem> items) {
         super(context, textViewResourceId, items);
         this.items = items;
     }

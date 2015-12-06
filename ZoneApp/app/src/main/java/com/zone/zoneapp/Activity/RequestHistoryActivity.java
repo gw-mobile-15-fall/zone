@@ -46,7 +46,6 @@ public class RequestHistoryActivity extends Activity {
 
         loadInformation();
 
-        //populateListView();
     }
 
     //search all the posts of current user from parse

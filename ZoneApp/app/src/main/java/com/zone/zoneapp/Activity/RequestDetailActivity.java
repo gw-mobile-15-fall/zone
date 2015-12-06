@@ -20,6 +20,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -33,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RequestDetailActivity extends AppCompatActivity {
+public class RequestDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ListItem mItem;
     private TextView mDetailTextView;
@@ -43,6 +50,8 @@ public class RequestDetailActivity extends AppCompatActivity {
     private ResponseListAdapter mAdapter;
     private Button mShowMapButton;
     private ParseUser mCurrentUesr;
+    private LatLng mRequestLocation;
+    private String mRequestSubject;
 
 
     @Override
@@ -73,12 +82,48 @@ public class RequestDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         mCurrentUesr = ParseUser.getCurrentUser();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mItem = (ListItem)getIntent().getSerializableExtra("ItemDetail");
+        mDetailTextView = (TextView)findViewById(R.id.detail_desciprtion);
+        mDetailTextView.setText("Description: " + mItem.getmDetail());
+        FloatingActionButton mChatButton = (FloatingActionButton) findViewById(R.id.fab);
+        mChatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(RequestDetailActivity.this, WriteResponseActivity.class);
+                i.putExtra("postItem", mItem);
+                startActivity(i);
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
+        MapFragment mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.request_detail_map);
+        mMapFragment.getMapAsync(this);
 
+        mRequestLocation = new LatLng(mItem.getmLatitude(),mItem.getmLongitude());
+        mRequestSubject = mItem.getSubject();
 
+        mListView = (ListView)findViewById(R.id.response_list_container);
+        getList();
+
+    }
+
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.clear();
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(mRequestLocation)
+                .zoom(17)
+                .build();
+        googleMap.addMarker(new MarkerOptions()
+                .position(mRequestLocation)
+                .title(mRequestSubject));
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     private void getList(){
@@ -92,23 +137,12 @@ public class RequestDetailActivity extends AppCompatActivity {
                 if (response.getUserEmail().equals(ParseUser.getCurrentUser().getEmail())){
                     Toast.makeText(RequestDetailActivity.this,RequestDetailActivity.this.getString(R.string.can_not_add_yourself),Toast.LENGTH_SHORT).show();
                 }
-
                 else{
-
-
                     new AlertDialog.Builder(RequestDetailActivity.this)
                             .setTitle("Add to contact")
                             .setMessage("Add this user to your private contact list?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // continue with delete
-
-
-
-                                    Log.i("aaa","hererererere");
-
-
-
                                     ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Contacts");
                                     query1.whereEqualTo("currentUser",mCurrentUesr.getEmail());
 
@@ -164,85 +198,6 @@ public class RequestDetailActivity extends AppCompatActivity {
 
                                         }
                                     });
-
-
-
-
-/**
-                                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Contacts");
-
-                                    query.whereEqualTo("currentUser",mCurrentUesr.getEmail());
-                                    query.findInBackground(new FindCallback<ParseObject>() {
-                                        @Override
-                                        public void done(List<ParseObject> objects, ParseException e) {
-                                            if (objects.size()==0){
-                                                ParseObject parseObject = new ParseObject("Contacts");
-                                                parseObject.put("currentUser",mCurrentUesr.getEmail());
-                                                parseObject.addUnique("contactList",response.getUsername());
-                                                parseObject.saveInBackground();
-
-                                            }
-
-                                            else if (objects.size()==1){
-                                                objects.get(0).addUnique("contactList",response.getUsername());
-                                            }
-                                            else {
-                                                return;
-                                            }
-                                        }
-                                    });
-
-                                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Contacts");
-
-                                    query1.whereEqualTo("currentUser",response.getUsername());
-                                    query1.findInBackground(new FindCallback<ParseObject>() {
-                                        @Override
-                                        public void done(List<ParseObject> objects, ParseException e) {
-                                            if (objects.size()==0){
-                                                ParseObject parseObject = new ParseObject("Contacts");
-                                                parseObject.put("currentUser",response.getUsername());
-                                                parseObject.addUnique("contactList",mCurrentUesr.getEmail());
-                                                parseObject.saveInBackground();
-
-                                            }
-
-                                            else if (objects.size()==1){
-                                                objects.get(0).addUnique("contactList",mCurrentUesr.getEmail());
-                                            }
-                                            else {
-                                                return;
-                                            }
-                                        }
-                                    });
-
-                                     */
-
-
-                                    /**
-                                    final ParseUser parseUser = ParseUser.getCurrentUser();
-                                    parseUser.addUnique("contactList", response.getUsername());
-
-
-                                    ParseQuery<ParseUser> query = ParseUser.getQuery();
-                                    Log.i("aaa",response.getUsername());
-                                    query.whereEqualTo("email", response.getUsername());
-                                    query.findInBackground(new FindCallback<ParseUser>() {
-                                        public void done(List<ParseUser> objects, ParseException e) {
-                                            if (e == null) {
-                                                // The query was successful.
-                                                Log.i("aaa", objects.get(0).getUsername());
-
-                                                ParseUser user = objects.get(0);
-                                                user.addUnique("contactList,", "this this test");
-                                                user.saveInBackground();
-                                                //parseUser.saveInBackground();
-
-                                            } else {
-                                                // Something went wrong.
-                                            }
-                                        }
-                                    });
-                                     */
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -277,91 +232,26 @@ public class RequestDetailActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        FloatingActionButton mChatButton = (FloatingActionButton) findViewById(R.id.fab);
-        mChatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent i = new Intent(RequestDetailActivity.this, WriteResponseActivity.class);
-                i.putExtra("postItem", mItem);
-                startActivity(i);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        mShowMapButton = (Button) findViewById(R.id.show_map_button);
-        mShowMapButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Called when a view has been clicked.
-             *
-             * @param v The view that was clicked.
-             */
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RequestDetailActivity.this,RequestDetailMapActivity.class);
-                intent.putExtra("Lat",mItem.getmLatitude());
-                intent.putExtra("Lng",mItem.getmLongitude());
-                intent.putExtra("Subject",mItem.getSubject());
-                startActivity(intent);
-            }
-        });
-
-
-
-
-
-        //Response response = new Response("123","11","hp","body");
-        //mList.add(response);
-
-
-        mItem = (ListItem)getIntent().getSerializableExtra("ItemDetail");
-        mDetailTextView = (TextView)findViewById(R.id.detail_desciprtion);
-        mDetailTextView.setText("Description: "+mItem.getmDetail());
-
-
-        mListView = (ListView)findViewById(R.id.response_list_container);
-
-
-        getList();
-
-    }
-
-
     private class ResponseListAdapter extends ArrayAdapter<Response>{
 
         public ResponseListAdapter() {
             super(RequestDetailActivity.this, 0, mList);
         }
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             try{
                 if (convertView==null){
                     convertView = RequestDetailActivity.this.getLayoutInflater().inflate(R.layout.list_response,null);
                 }
-
                 Response response = getItem(position);
-
-
-                //TextView username = (TextView)convertView.findViewById(R.id.response_user_name);
-                //username.setText(response.getUserEmail());
-
                 TextView time = (TextView)convertView.findViewById(R.id.response_time);
                 time.setText(response.getTime());
-
-
                 TextView text = (TextView)convertView.findViewById(R.id.response_text);
                 text.setText(response.getUserEmail()+": "+response.getText());
             }catch (Exception e){
                 e.printStackTrace();
             }
-
             return convertView;
         }
     }
-
 }

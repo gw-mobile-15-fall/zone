@@ -195,7 +195,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             Log.d(TAG,placeId);
             Log.d(TAG, String.valueOf(""+placeLatLng.latitude));
             Log.d(TAG, String.valueOf("" + placeLatLng.longitude));
-//            Log.d(TAG, String.valueOf(mGoogleMap==null));
+            mSelectedLocation = placeLatLng;
             focusOnLocation(placeLatLng, mGoogleMap);
             places.release();
         }

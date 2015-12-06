@@ -10,11 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.utils.LocationFinder;
+import com.zone.zoneapp.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
 
@@ -45,15 +47,19 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         mWelcomeTextView.setText("Welcome " + mUserName + " !");
 
 
+
         mCreateRequest = (Button)findViewById(R.id.create_request_Button);
         mCreateRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!checkInternet()){
+                    return;
+                }
                 Intent i = new Intent(MainActivity.this, CreateRequestActivity.class);
-                Bundle data = new Bundle();
-                data.putDouble("currentLat",mCurrentLocation.getLatitude());
-                data.putDouble("currentLng",mCurrentLocation.getLongitude());
-                i.putExtras(data);
+                //Bundle data = new Bundle();
+                //data.putDouble("currentLat",mCurrentLocation.getLatitude());
+                //data.putDouble("currentLng",mCurrentLocation.getLongitude());
+                //i.putExtras(data);
                 startActivity(i);
             }
         });
@@ -62,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         mNearbyRequset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!checkInternet()){
+                    return;
+                }
                 Intent i = new Intent(MainActivity.this, RequestsNearbyActivity.class);
                 i.putExtra(LoginActivity.EXTRA_USERNAME, mUserName);
                 startActivity(i);
@@ -72,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         mRequestHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!checkInternet()){
+                    return;
+                }
                 Intent i = new Intent(MainActivity.this, RequestHistoryActivity.class);
                 i.putExtra(LoginActivity.EXTRA_USERNAME, mUserName);
                 startActivity(i);
@@ -83,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         mPrivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!checkInternet()){
+                    return;
+                }
                 Intent i = new Intent(MainActivity.this, PrivateMessageActivity.class);
                 startActivity(i);
             }
@@ -153,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
 
     @Override
     public void locationFound(Location location) {
-        Log.d(TAG,"new location found");
+        Log.d(TAG, "new location found");
         /*
         when a location was found,
         if the mCurrentLocation has no value we will assign this location to the mCurrentLocation and store it to Parse
@@ -180,6 +195,14 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         } else {
             Log.d(TAG, "apparently the user's current location is the same as it was found last time, no need to save to Parse");
         }
+    }
+
+    private boolean  checkInternet(){
+        if (!Utils.isNetworkConnected(this)){
+            Toast.makeText(this,this.getString(R.string.no_internet_connection),Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     @Override

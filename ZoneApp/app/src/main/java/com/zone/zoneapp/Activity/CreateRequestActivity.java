@@ -21,8 +21,10 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.utils.LocationFinder;
+import com.zone.zoneapp.utils.Utils;
 
 public class CreateRequestActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
+
     public static final int MAP_REQUEST_CODE = 12314;
     public static final String TAG = "CreateRequest";
 
@@ -32,15 +34,11 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
     private Button mCreate;
     private TextView mLocationDisplay;
     private EditText mTit;
-
     private ProgressDialog mProgressDislog;
-
     private Location mLocation;
-
     private String mDesciption;
     private String mTitle;
-    private String mLatitude;
-    private String mLongitude;
+
 
 
     @Override
@@ -60,11 +58,13 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         mCreate = (Button)findViewById(R.id.create_request_Button);
         mLocationDisplay = (TextView)findViewById(R.id.text_specify_location);
 
+        Log.i("aaa", "mewin 1");
         //set information to views
         updateView();
     }
 
     private void updateView() {
+        Log.i("aaa","mewin 2");
 
         //for request title field
         mTit.addTextChangedListener(new TextWatcher() {
@@ -129,17 +129,17 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         mCurrentLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLocation = new Location("");
-                Bundle locationData = getIntent().getExtras();
-                mLocation.setLatitude(locationData.getDouble("currentLat"));
-                mLocation.setLongitude(locationData.getDouble("currentLng"));
-                mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
-//                mProgressDislog.setIndeterminate(true);
-//                mProgressDislog.setMessage(CreateRequestActivity.this.getString(R.string.fetching_current_location));
-//                mProgressDislog.show();
-//
-//                LocationFinder locationFinder = new LocationFinder(CreateRequestActivity.this, CreateRequestActivity.this);
-//                locationFinder.detectLocationOneTime();
+                //mLocation = new Location("");
+                //Bundle locationData = getIntent().getExtras();
+                //mLocation.setLatitude(locationData.getDouble("currentLat"));
+                //mLocation.setLongitude(locationData.getDouble("currentLng"));
+                //mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
+                mProgressDislog.setIndeterminate(true);
+                mProgressDislog.setMessage(CreateRequestActivity.this.getString(R.string.fetching_current_location));
+                mProgressDislog.show();
+
+                LocationFinder locationFinder = new LocationFinder(CreateRequestActivity.this, CreateRequestActivity.this);
+                locationFinder.detectLocationOneTime();
 
             }
         });
@@ -149,16 +149,16 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
             @Override
             public void onClick(View v) {
                 //input check
-                if (mDesciption.equals("")||mTitle.equals("")){
+                if (!Utils.isNetworkConnected(CreateRequestActivity.this)) {
+                    makeToast(CreateRequestActivity.this.getString(R.string.no_internet_connection));
+                    return;
+                } else if (mDesciption.equals("") || mTitle.equals("")) {
                     makeToast(CreateRequestActivity.this.getString(R.string.please_type_informtion));
-                }
-                else if (mDesciption.equals("")){
+                } else if (mDesciption.equals("")) {
                     makeToast(CreateRequestActivity.this.getString(R.string.please_type_des));
-                }
-                else if (mLocation == null){
+                } else if (mLocation == null) {
                     makeToast(CreateRequestActivity.this.getString(R.string.please_specify_your_location));
-                }
-                else {
+                } else {
                     createPost();
                     CreateRequestActivity.this.finish();
                 }
@@ -167,14 +167,12 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-    }
 
     @Override
     public void locationFound(Location location) {
+        Log.i("aaa","mewin 3");
+
         mProgressDislog.dismiss();
         mLocation = location;
         mLocationDisplay.setText("Latitude: " + Double.toString(location.getLatitude()) + " Longitude: " + Double.toString(location.getLongitude()));

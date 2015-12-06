@@ -277,7 +277,17 @@ public class PrivateMessageActivity extends AppCompatActivity {
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DATE);
-        String time = hour+":"+min+":"+sec+" - "+day+"/"+month+"/"+year;
+
+        String hourString = String.format("%02d", hour);
+        String minString = String.format("%02d", min);
+        String secString = String.format("%02d", sec);
+        String yearString = String.format("%04d", year);
+        String monthString = String.format("%02d", month);
+        String dayString = String.format("%02d", day);
+
+        //String time = hour+":"+min+":"+sec+" - "+day+"/"+month+"/"+year;
+
+        String time = hourString+":"+minString+":"+secString+" - "+dayString+"/"+monthString+"/"+yearString;
 
         ArrayList<String> list = new ArrayList<>();
 

@@ -79,10 +79,10 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
         //array.add(request2);
         //TODO During practial implementation, the populateListView Method may want to take in an ArrayList as input.
         //eg. refresh the list==> populate using the new list.
-        //ArrayAdapter<ListItem> adapter = new MyAdapter(this, R.layout.list_item,array);
+        //ArrayAdapter<ListItem> adapter = new MyListViewAdapter(this, R.layout.list_item,array);
 
 
-        ArrayAdapter<ListItem> adapter = new MyAdapter(this, R.layout.list_item, mList);
+        ArrayAdapter<ListItem> adapter = new MyListViewAdapter(this, R.layout.list_item, mList);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -33,25 +33,16 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Login Activity Launched");
         ParseUser currentUser = ParseUser.getCurrentUser();
+        setContentView(R.layout.activity_login);
+        initializeView();
         /*
         check if there is a user in the current session
         if so, login directly and lead user to the homepage of the app
-        otherwise, just take the user to the login page
+        otherwise user is shown the login page
          */
         if (currentUser != null) {
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
-        } else {
-            /*
-            we chose not to even wire things up if there is a login
-            session, which should potentially save some overheads
-             */
-            setContentView(R.layout.activity_login);
-            /*
-             initializeView will wire things up and set up
-             the functions of all buttons and edit-texts
-              */
-            initializeView();
         }
     }
 

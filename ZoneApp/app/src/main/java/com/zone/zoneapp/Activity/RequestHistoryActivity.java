@@ -39,7 +39,6 @@ public class RequestHistoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_history);
 
-
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage(this.getString(R.string.loading));
@@ -75,61 +74,8 @@ public class RequestHistoryActivity extends Activity {
 
     //The following populate method may still contain problems
     private void populateListView(){
-
         ListView requestHistoryListView = (ListView) findViewById(R.id.requestHistoryList);
-        //ArrayList<ListItem> array = new ArrayList<>();
-        //ListItem request1  = new ListItem("SEH","10-04-15", "Lost Book");
-        //ListItem request2  = new ListItem("Gelman","10-05-15", "IT help needed");
-        //array.add(request1);
-        //array.add(request2);
-        //TODO During practial implementation, the populateListView Method may want to take in an ArrayList as input.
-        //eg. refresh the list==> populate using the new list.
-
-
-        //ArrayAdapter<ListItem> adapter = new MyAdapter(this, R.layout.list_item,mList);
-        //requestHistoryListView.setAdapter(adapter);
         requestHistoryListView.setAdapter(mAdapter);
-
-        /**
-        requestHistoryListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final ListItem item = (ListItem)parent.getItemAtPosition(position);
-                new AlertDialog.Builder(RequestHistoryActivity.this)
-                        .setTitle("Request get solved?")
-                        .setMessage("Are you sure you want to delete this entry?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
-
-                                ParseQuery<ParseObject> query = ParseQuery.getQuery("Posts");
-                                query.getInBackground(item.getmId(), new GetCallback<ParseObject>() {
-                                    public void done(ParseObject object, ParseException e) {
-                                        if (e == null) {
-                                            // Now let's update it with some new data. In this case, only cheatMode and score
-                                            // will get sent to the Parse Cloud. playerName hasn't changed.
-                                            object.deleteInBackground();
-                                            mList = new ArrayList<ListItem>();
-                                            loadInformation();
-                                        }
-                                    }
-                                });
-
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do nothing
-                                return;
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-                return false;
-            }
-        });
-         */
-
         requestHistoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -138,8 +84,6 @@ public class RequestHistoryActivity extends Activity {
                 startActivity(i);
             }
         });
-
-
     }
 
     @Override
@@ -166,11 +110,9 @@ public class RequestHistoryActivity extends Activity {
 
 
     private class HistoryListAdapter extends ArrayAdapter<ListItem>{
-
         public HistoryListAdapter() {
             super(RequestHistoryActivity.this, 0, mList);
         }
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             try{

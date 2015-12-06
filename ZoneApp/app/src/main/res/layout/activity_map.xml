@@ -13,6 +13,12 @@
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:layout_gravity="center_horizontal"/>
+    <AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/map_search_box"
+        android:hint="@string/map_search_box_hint"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

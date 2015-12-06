@@ -84,5 +84,8 @@
     <string name="select_first">Please select a user to chat with first.</string>
     <string name="map_search_box_hint">input your location here</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
+    <string name="setting_option">settings</string>
+    <string name="change_settings">Change Setting</string>
+    <string name="change_radius">Change radius for searching</string>
 
 </resources>

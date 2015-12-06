@@ -7,4 +7,6 @@
         app:showAsAction="always"
         android:title="@string/refresh"
         android:icon="@drawable/refresh_icon"/>
+
+
 </menu>

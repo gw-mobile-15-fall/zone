@@ -1,19 +1,25 @@
 package com.zone.zoneapp.utils;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.JsonObject;
+import com.koushikdutta.ion.Ion;
 import com.parse.ParseObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by hpishepei on 11/1/15.
  */
 public class Utils {
-
-
+    private static final String TAG = "Utils";
+    private static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/details/json?key=";
+    private static final String PLACE_URL = "&placeid=";
     public static void insertToParse(String object, HashMap<String,String> value){
         ParseObject parseObject = new ParseObject(object);
         Iterator it = value.entrySet().iterator();
@@ -24,5 +30,21 @@ public class Utils {
         }
         Log.i("aaa","save");
         parseObject.saveInBackground();
+    }
+
+    public static LatLng getLatLngFromPlaceId(String placeId, Context context) throws ExecutionException, InterruptedException {
+        LatLng result = null;
+//        try{
+            String url = BASE_URL + Constants.GOOGLE_PLACES_SERVER_API_KEY + PLACE_URL + placeId;
+            JsonObject placeDetails = Ion.with(context).load(url).asJsonObject().get();
+            Double lat = Double.parseDouble(placeDetails.get("result").getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lat").getAsString());
+            Double lng = Double.parseDouble(placeDetails.get("result").getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lng").getAsString());
+            result = new LatLng(lat,lng);
+            Log.d(TAG,"place detail retrieved");
+//        } catch (Exception e){
+//        // TODO handle the exception with log or toast
+//            Log.d(TAG,"failed to get the place details");
+//        }
+        return result;
     }
 }

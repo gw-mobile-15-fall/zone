@@ -43,7 +43,7 @@ public class MyAdapter extends ArrayAdapter<ListItem>{
             }
 
             if(time != null) {
-                time.setText("Time: " + item.getTime() );
+                time.setText(item.getTime() );
             }
 
             if(subject != null) {

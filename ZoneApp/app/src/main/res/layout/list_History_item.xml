@@ -17,6 +17,8 @@
             android:layout_marginRight="10dp"
             android:id="@+id/textview_time"
             android:text="time"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -31,7 +33,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="8dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/icon_delete"
+            android:src="@drawable/delete_icon"
             />
 
 
@@ -42,8 +44,11 @@
         android:id="@+id/textview_title"
         android:layout_marginLeft="10dp"
         android:text="title"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         android:layout_marginRight="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         />
 </LinearLayout>

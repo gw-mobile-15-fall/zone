@@ -8,8 +8,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -21,9 +21,9 @@ import com.zone.zoneapp.model.UserAccount;
 public class LoginActivity extends AppCompatActivity{
     private EditText mUserNameEditText;
     private EditText mPasswordEditText;
-    private Button mSignInButton;
-    private Button mForgetButton;
-    private Button mCreateButton;
+    private ImageView mSignInButton;
+    private ImageView mForgetButton;
+    private ImageView mCreateButton;
     private UserAccount mUser;
     private static final String TAG = "LoginActivity";
     public static final String EXTRA_USERNAME = "com.zone.app.username";
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity{
         });
 
 
-        mSignInButton = (Button)findViewById(R.id.sign_in_Button);
+        mSignInButton = (ImageView)findViewById(R.id.sign_in_Button);
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
-        mForgetButton = (Button)findViewById(R.id.forget_password_Button);
+        mForgetButton = (ImageView)findViewById(R.id.forget_password_Button);
         mForgetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
-        mCreateButton = (Button)findViewById(R.id.create_account_Button);
+        mCreateButton = (ImageView)findViewById(R.id.create_account_Button);
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

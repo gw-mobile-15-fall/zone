@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background_create_request"
     android:gravity="center">
 
     <TextView
@@ -11,17 +12,19 @@
         android:layout_marginBottom="30dp"
         android:text="@string/request_description_label"
         android:textStyle="bold"
+        android:textColor="#133553"
         android:textSize="25sp" />
 
     <EditText
         android:id="@+id/request_Title_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="30dp"
         android:hint="@string/request_title_hint"
-        android:textStyle="italic"
+        android:textStyle="italic|bold"
         android:textSize="15sp"
         android:maxLength="40"
         android:gravity="top" />
@@ -30,12 +33,13 @@
     <EditText
         android:id="@+id/request_description_EditText"
         android:layout_width="match_parent"
+        android:padding="5dp"
         android:layout_height="150dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="30dp"
         android:hint="@string/request_description_hint"
-        android:textStyle="italic"
+        android:textStyle="italic|bold"
         android:textSize="15sp"
         android:maxLength="400"
         android:gravity="top" />
@@ -46,8 +50,11 @@
 
         <Button
             android:id="@+id/find_location_on_google_map"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="10dp"
+            android:background="#1b4d63"
+            android:textColor="#FFFFFF"
+            android:layout_height="30dp"
+            android:textSize="13sp"
             android:text="@string/specify_location_Button"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
@@ -55,8 +62,11 @@
 
         <Button
             android:id="@+id/use_current_location"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="10dp"
+            android:textSize="13sp"
+            android:textColor="#FFFFFF"
+            android:background="#1b4d63"
+            android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:text="@string/use_current_location_Button"
@@ -70,12 +80,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
+        android:textColor="#ffffff"
         android:hint="@string/location_specify"/>
 
     <Button
         android:id="@+id/create_request_Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:textSize="13sp"
+        android:background="#1b4d63"
+        android:textColor="#FFFFFF"
         android:text="@string/submit_request_label"/>
 
 

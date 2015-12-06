@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background_main_page"
     >
 
     <TextView
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:layout_marginTop="30dp"
+        android:textColor="#FFFFFF"
         android:text="@string/my_private_zone"
         android:textStyle="bold"
         android:textSize="25sp"
@@ -27,13 +29,13 @@
         android:id="@+id/chat_with_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginBottom="10dp"
         android:layout_below="@id/private_message_list_container"
         android:text="Chatting with"
+        android:gravity="center_horizontal"
+        android:textColor="#FFFFFF"
         android:textStyle="bold|italic"
-        android:textSize="14sp"
+        android:textSize="15sp"
         />
 
 
@@ -49,19 +51,12 @@
         />
 
 
-
-
-
-
-
-
     <LinearLayout
         android:id="@+id/listFooter"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-
 
         >
 
@@ -70,6 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
             android:inputType="textShortMessage"
             android:lines="1"
             android:singleLine="true" />

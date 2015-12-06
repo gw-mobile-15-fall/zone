@@ -320,7 +320,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 
         mItem = (ListItem)getIntent().getSerializableExtra("ItemDetail");
         mDetailTextView = (TextView)findViewById(R.id.detail_desciprtion);
-        mDetailTextView.setText(mItem.getmDetail());
+        mDetailTextView.setText("Description: "+mItem.getmDetail());
 
 
         mListView = (ListView)findViewById(R.id.response_list_container);
@@ -347,15 +347,15 @@ public class RequestDetailActivity extends AppCompatActivity {
                 Response response = getItem(position);
 
 
-                TextView username = (TextView)convertView.findViewById(R.id.response_user_name);
-                username.setText(response.getUserEmail());
+                //TextView username = (TextView)convertView.findViewById(R.id.response_user_name);
+                //username.setText(response.getUserEmail());
 
                 TextView time = (TextView)convertView.findViewById(R.id.response_time);
                 time.setText(response.getTime());
 
 
                 TextView text = (TextView)convertView.findViewById(R.id.response_text);
-                text.setText(response.getText());
+                text.setText(response.getUserEmail()+": "+response.getText());
             }catch (Exception e){
                 e.printStackTrace();
             }

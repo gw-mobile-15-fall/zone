@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="@drawable/background_main_page"
     >
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:textColor="#660033" />
+        android:textColor="#ffffff" />
 
 
     <Button
@@ -21,41 +22,62 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
+        android:textStyle="bold"
+        android:textColor="#133553"
         android:text="@string/create_request_button_label"/>
 
     <Button
         android:id="@+id/nearby_request_Button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
+        android:textStyle="bold"
+        android:textColor="#133553"
         android:text="@string/nearby_request_button_label"/>
 
     <Button
         android:id="@+id/request_history_Button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
+        android:textStyle="bold"
+        android:textColor="#133553"
         android:text="@string/request_history_label"/>
 
-    <Button
-        android:id="@+id/edit_profile_Button"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="@string/edit_profile_button_label"/>
 
-    <Button
-        android:id="@+id/private_message_Button"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="@string/private_message"/>
+    <!--
 
-    <Button
-        android:id="@+id/logout_Button"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="@string/logout"/>
+
+<Button
+    android:id="@+id/edit_profile_Button"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:textStyle="bold"
+    android:textColor="#133553"
+    android:text="@string/edit_profile_button_label"/>
+-->
+
+<Button
+    android:id="@+id/private_message_Button"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp"
+    android:textStyle="bold"
+    android:textColor="#133553"
+    android:text="@string/private_message"/>
+
+
+
+<Button
+    android:id="@+id/logout_Button"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:textStyle="bold"
+    android:textColor="#133553"
+    android:text="@string/logout"/>
+
+
 
 </LinearLayout>

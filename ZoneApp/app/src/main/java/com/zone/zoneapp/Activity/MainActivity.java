@@ -76,6 +76,16 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
             }
         });
 
+
+        mPrivate = (Button)findViewById(R.id.private_message_Button);
+        mPrivate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, PrivateMessageActivity.class);
+                startActivity(i);
+            }
+        });
+        /**
         mEditProfile = (Button)findViewById(R.id.edit_profile_Button);
         mEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,14 +96,8 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
             }
         });
 
-        mPrivate = (Button)findViewById(R.id.private_message_Button);
-        mPrivate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, PrivateMessageActivity.class);
-                startActivity(i);
-            }
-        });
+         */
+
 
 
         mLogout = (Button)findViewById(R.id.logout_Button);
@@ -106,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
                 startActivity(i);
             }
         });
+
+
     }
 
 

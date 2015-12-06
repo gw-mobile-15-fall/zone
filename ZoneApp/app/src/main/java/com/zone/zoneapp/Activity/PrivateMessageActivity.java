@@ -475,14 +475,14 @@ public class PrivateMessageActivity extends AppCompatActivity {
                 final Chat chat = getItem(position);
             Log.i("aaa","here13");
 
-                TextView userIdView = (TextView)convertView.findViewById(R.id.chatting_user_name);
-                userIdView.setText(chat.getAuthor());
+                //TextView userIdView = (TextView)convertView.findViewById(R.id.chatting_user_name);
+                //userIdView.setText(chat.getAuthor());
 
                 TextView time = (TextView)convertView.findViewById(R.id.chatting_time);
                 time.setText(chat.getTime());
 
                 TextView text = (TextView)convertView.findViewById(R.id.chatting_text);
-                text.setText(chat.getMessage());
+                text.setText(chat.getAuthor()+": "+chat.getMessage());
             Log.i("aaa", "here14");
 
             return convertView;

@@ -41,6 +41,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +168,10 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        return;
+    }
 
     @Override
     public void locationFound(Location location) {
@@ -231,5 +235,7 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
             return;
         }
     }
+
+
 }
 

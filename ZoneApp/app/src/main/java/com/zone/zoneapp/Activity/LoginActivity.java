@@ -46,6 +46,12 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        return;
+    }
+
     private void initializeView(){
         mUser = new UserAccount();
         mUserNameEditText = (EditText)findViewById(R.id.login_username_EditText);

@@ -18,9 +18,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="80dp"
         android:scrollbars="vertical"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/detail_desciprtion"
@@ -32,25 +33,15 @@
             android:textColor="#ffffff" />
 
     </ScrollView>
-
-    <Button
-        android:layout_marginTop="5dp"
-        android:id="@+id/show_map_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:layout_gravity="right"
-        android:text="@string/show_map_label"
-        />
-
-
     <ListView
         android:id="@+id/response_list_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="120dp">
     </ListView>
-
-
-
+    <fragment
+        android:layout_width="match_parent"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_height="300dp"
+        android:id="@+id/request_detail_map"
+        android:layout_alignParentBottom="true"/>
 </LinearLayout>

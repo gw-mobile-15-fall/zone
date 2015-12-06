@@ -1,5 +1,8 @@
 package com.zone.zoneapp.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -187,6 +190,45 @@ public class PrivateMessageActivity extends AppCompatActivity {
                 //Intent i = new Intent(PrivateMessageActivity.this, PrivateChattingActivity.class);
                 //i.putExtra("PRIAVATE_CHATTING_WITH",(IdEmailPair)parent.getItemAtPosition(position));
                 //startActivity(i);
+            }
+        });
+
+
+        //Long click to use implicit intent to send email
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final IdEmailPair pair = (IdEmailPair) parent.getItemAtPosition(position);
+                new AlertDialog.Builder(PrivateMessageActivity.this)
+                        .setTitle(PrivateMessageActivity.this.getString(R.string.set_email))
+                        .setMessage(PrivateMessageActivity.this.getString(R.string.set_email_to_this_user))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                                emailIntent.setAction(Intent.ACTION_SEND);
+                                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{pair.getEmail()});
+                                emailIntent.setType("text/plain");
+                                startActivity(emailIntent);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                                return;
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+
+
+
+
+
+
+
+                return false;
             }
         });
 

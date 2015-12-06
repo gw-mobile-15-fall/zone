@@ -138,6 +138,7 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
                             // continue with delete
                             mDistance = Integer.parseInt(input.getText().toString());
                             PersistanceManager.setRadius(RequestsNearbyActivity.this, mDistance);
+                            update();
 
                         }
                     })

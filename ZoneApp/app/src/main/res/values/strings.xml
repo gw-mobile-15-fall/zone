@@ -87,5 +87,7 @@
     <string name="setting_option">settings</string>
     <string name="change_settings">Change Setting</string>
     <string name="change_radius">Change radius for searching</string>
+    <string name="set_email">Set email</string>
+    <string name="set_email_to_this_user">Do you want to send email to this user?</string>
 
 </resources>

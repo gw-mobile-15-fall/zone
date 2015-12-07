@@ -59,7 +59,7 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
 
         //get searching radius settings from sharedPreference
         mDistance = PersistanceManager.getRadius(this);
-        mLocation = null;
+        mLocation = new Location("");
         mListView = (ListView) findViewById(R.id.requestsNearbyList);
         mList = new ArrayList<ListItem>();
         mProgressDialog = new ProgressDialog(this);
@@ -144,10 +144,7 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
 
     @Override
     public void locationFound(Location location) {
-        if (mLocation == null){
-            mLocation = location;
-            loadInformation();
-        }
+        loadInformation();
 
 
     }
@@ -156,6 +153,7 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     public void locationNotFound(LocationFinder.FailureReason failureReason) {
         mProgressDialog.dismiss();
         Toast.makeText(this, this.getString(R.string.cannot_load), Toast.LENGTH_SHORT).show();
+        return;
 
     }
 
@@ -169,7 +167,6 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                Log.i("aaa", "size:" + objects.size());
                 if (objects.size() == 0) {
 
                     mProgressDialog.dismiss();
@@ -183,6 +180,7 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
                         mList.add(item);
                     }
                     mProgressDialog.dismiss();
+
                     populateListView();
                 }
             }
@@ -191,6 +189,7 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     }
 
 
+    //although we implement this for rotation, we still think it is better to let user update data after rotation. Therefore, we didn't use this
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

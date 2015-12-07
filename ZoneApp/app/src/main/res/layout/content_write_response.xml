@@ -9,7 +9,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_write_response"
     tools:context="com.zone.zoneapp.Activity.WriteResponseActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/secondary_background">
 
     <TextView
         android:layout_marginTop="10dp"

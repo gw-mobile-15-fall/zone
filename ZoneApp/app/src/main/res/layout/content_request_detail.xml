@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:text="test"
+            android:text="@string/content_request_detail_test"
             android:textStyle="bold"
             android:textColor="#ffffff" />
 

@@ -1,4 +1,4 @@
-package com.zone.zoneapp.Activity;
+package com.zone.zoneapp.utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;

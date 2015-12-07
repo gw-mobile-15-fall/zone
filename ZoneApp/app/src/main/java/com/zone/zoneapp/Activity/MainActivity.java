@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         ParseUser currentUser = ParseUser.getCurrentUser();
         mUserName = currentUser.getUsername();
         mWelcomeTextView = (TextView)findViewById(R.id.welcome_user_textView);
-        mWelcomeTextView.setText(this.getString(R.string.welcome) + mUserName + " !");
+        mWelcomeTextView.setText(this.getString(R.string.welcome));
         mCreateRequest = (Button)findViewById(R.id.create_request_Button);
         mCreateRequest.setOnClickListener(new View.OnClickListener() {
             @Override

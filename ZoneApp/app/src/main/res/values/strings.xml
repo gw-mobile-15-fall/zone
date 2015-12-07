@@ -101,7 +101,7 @@
     <string name="activity_private_message_chatting_with">Chatting with</string>
     <string name="list_history_item_title">title</string>
     <string name="list_response_test">test</string>
-    <string name="welcome">Welcome</string>
+    <string name="welcome">Welcome to Zone!</string>
     <string name="please_refresh">Please click refresh to get a location first!</string>
 
 </resources>

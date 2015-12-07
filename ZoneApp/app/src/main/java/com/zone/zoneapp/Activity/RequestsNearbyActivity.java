@@ -46,25 +46,31 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requests_nearby);
+
+
         update();
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     private void update(){
         if (!Utils.isNetworkConnected(this)){
             Toast.makeText(this,getString(R.string.no_internet_connection),Toast.LENGTH_LONG).show();
             return;
         }
-
-        //get searching radius settings from sharedPreference
         mDistance = PersistanceManager.getRadius(this);
-        mLocation = new Location("");
+        mLocation = null;
         mListView = (ListView) findViewById(R.id.requestsNearbyList);
         mList = new ArrayList<ListItem>();
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage(this.getString(R.string.loading));
+        //populateListView();
         mProgressDialog.show();
 
         LocationFinder locationFinder = new LocationFinder(this,this);
@@ -144,7 +150,10 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
 
     @Override
     public void locationFound(Location location) {
-        loadInformation();
+        if (mLocation == null){
+            mLocation = location;
+            loadInformation();
+        }
 
 
     }
@@ -153,13 +162,13 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     public void locationNotFound(LocationFinder.FailureReason failureReason) {
         mProgressDialog.dismiss();
         Toast.makeText(this, this.getString(R.string.cannot_load), Toast.LENGTH_SHORT).show();
-        return;
 
     }
 
     private void loadInformation(){
 
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(mLocation.getLatitude(),mLocation.getLongitude());
+
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Posts");
 
         //find all the posts within certain miles
@@ -167,6 +176,7 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
+                Log.i("aaa", "size:" + objects.size());
                 if (objects.size() == 0) {
 
                     mProgressDialog.dismiss();
@@ -180,7 +190,6 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
                         mList.add(item);
                     }
                     mProgressDialog.dismiss();
-
                     populateListView();
                 }
             }
@@ -189,11 +198,11 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     }
 
 
-    //although we implement this for rotation, we still think it is better to let user update data after rotation. Therefore, we didn't use this
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //save location information before rotation
+
         outState.putSerializable("retrieve_list", mList);
     }
 }

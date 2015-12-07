@@ -23,7 +23,7 @@ import com.zone.zoneapp.R;
 import com.zone.zoneapp.utils.LocationFinder;
 import com.zone.zoneapp.utils.Utils;
 
-public class CreateRequestActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
+public class CreateRequestActivity extends AppCompatActivity /*implements LocationFinder.LocationDetector*/{
 
     public static final int MAP_REQUEST_CODE = 12314;
     public static final String TAG = "CreateRequest";
@@ -130,17 +130,17 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
         mCurrentLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mLocation = new Location("");
-                //Bundle locationData = getIntent().getExtras();
-                //mLocation.setLatitude(locationData.getDouble("currentLat"));
-                //mLocation.setLongitude(locationData.getDouble("currentLng"));
-                //mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
-                mProgressDislog.setIndeterminate(true);
-                mProgressDislog.setMessage(CreateRequestActivity.this.getString(R.string.fetching_current_location));
-                mProgressDislog.show();
-
-                LocationFinder locationFinder = new LocationFinder(CreateRequestActivity.this, CreateRequestActivity.this);
-                locationFinder.detectLocationOneTime();
+                mLocation = new Location("");
+                Bundle locationData = getIntent().getExtras();
+                mLocation.setLatitude(locationData.getDouble("currentLat"));
+                mLocation.setLongitude(locationData.getDouble("currentLng"));
+                mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
+//                mProgressDislog.setIndeterminate(true);
+//                mProgressDislog.setMessage(CreateRequestActivity.this.getString(R.string.fetching_current_location));
+//                mProgressDislog.show();
+//
+//                LocationFinder locationFinder = new LocationFinder(CreateRequestActivity.this, CreateRequestActivity.this);
+//                locationFinder.detectLocationOneTime();
 
             }
         });
@@ -169,20 +169,20 @@ public class CreateRequestActivity extends AppCompatActivity implements Location
     }
 
 
-    @Override
-    public void locationFound(Location location) {
-        Log.i("aaa","mewin 3");
+//    @Override
+//    public void locationFound(Location location) {
+//        Log.i("aaa","mewin 3");
+//
+//        mProgressDislog.dismiss();
+//        mLocation = location;
+//        mLocationDisplay.setText("Latitude: " + Double.toString(location.getLatitude()) + " Longitude: " + Double.toString(location.getLongitude()));
+//    }
 
-        mProgressDislog.dismiss();
-        mLocation = location;
-        mLocationDisplay.setText("Latitude: " + Double.toString(location.getLatitude()) + " Longitude: " + Double.toString(location.getLongitude()));
-    }
-
-    @Override
-    public void locationNotFound(LocationFinder.FailureReason failureReason) {
-        mProgressDislog.dismiss();
-        makeToast(this.getString(R.string.location_not_found));
-    }
+//    @Override
+//    public void locationNotFound(LocationFinder.FailureReason failureReason) {
+//        mProgressDislog.dismiss();
+//        makeToast(this.getString(R.string.location_not_found));
+//    }
 
     private void makeToast(String s){
         Toast.makeText(this,s,Toast.LENGTH_SHORT).show();

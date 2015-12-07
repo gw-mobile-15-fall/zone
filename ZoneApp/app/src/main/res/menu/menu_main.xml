@@ -4,7 +4,13 @@
     <item android:id="@+id/action_bar_update_profile"
         android:title="@string/action_bar_update_profile_text"
         android:icon="@drawable/ic_profile_3"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/refresh_button_main"
+        android:title="@string/refresh"
+        android:icon="@drawable/refresh_icon"
+        app:showAsAction="always"
         />
 
 </menu>

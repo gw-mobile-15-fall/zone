@@ -69,6 +69,7 @@ public class PrivateMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_private_message);
         Log.i("aaa", "here");
 
+        //set up firebase
         mFireBaseRef = new Firebase("https://zone-app.firebaseio.com/");
 
         mListenerList = new ArrayList<>();
@@ -108,11 +109,9 @@ public class PrivateMessageActivity extends AppCompatActivity {
             }
         });
 
-        Log.i("aaa", "here1");
 
+        //get the contact list of current user from parse
         mParseUser = ParseUser.getCurrentUser();
-        Log.i("aaa", "here2");
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Contacts");
         query.whereEqualTo("currentUser", mParseUser.getEmail());
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -203,6 +202,7 @@ public class PrivateMessageActivity extends AppCompatActivity {
     }
 
 
+    //send message function
     private void sendMessage() {
         if (mChatWithPair==null){
             Toast.makeText(PrivateMessageActivity.this,PrivateMessageActivity.this.getString(R.string.select_first),Toast.LENGTH_SHORT).show();
@@ -232,6 +232,7 @@ public class PrivateMessageActivity extends AppCompatActivity {
         String toId = mChatWithPair.getId()+"&"+mParseUser.getObjectId();
         Log.i("aaa", "chat with" + fromId);
 
+        //save message in firebase
         Chat chatObject = new Chat(mInputText.getText().toString(), mParseUser.getEmail(), time);
         mFireBaseRef.child(fromId).push().setValue(chatObject);
         mFireBaseRef.child(toId).push().setValue(chatObject);
@@ -241,16 +242,17 @@ public class PrivateMessageActivity extends AppCompatActivity {
     }
 
 
+    //get message function
     private void getMessage() {
 
+        //if no previous message, then stop
         if (mChatWithString.equals("")){
             return;
         }
 
-
         ArrayList<String> list = new ArrayList<>();
-        Log.i("aaa", mChatWithString);
 
+        //get message from firebase
         mFireBaseRef.child(mChatWithString).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -259,16 +261,10 @@ public class PrivateMessageActivity extends AppCompatActivity {
                     Chat chat = chatSnapshot.getValue(Chat.class);
 
                     mAllMessageList.add(chat);
-                    //mChattingListAdapter.notifyDataSetChanged();
 
-                    //mChattingListAdapter = new ChattingListAdapter();
-                    //mChattingListView.setAdapter(mChattingListAdapter);
 
                 }
-                //mChattingListAdapter = new ChattingListAdapter();
-                //mChattingListView.setAdapter(mChattingListAdapter);
                 mChattingListAdapter.notifyDataSetChanged();
-                Log.i("aaa", mAllMessageList.toString());
 
             }
 
@@ -278,50 +274,6 @@ public class PrivateMessageActivity extends AppCompatActivity {
             }
         });
 
-        /**
-        for (IdEmailPair pair : mChatList){
-            String id = mParseUser.getObjectId()+"&"+pair.getId();
-            list.add(id);
-        }
-
-        for (String s : list){
-            ValueEventListener listener = mFireBaseRef.child(s).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    //mAllMessageList.add((Chat) dataSnapshot.getValue());
-                    //ArrayList<Chat> chatList = (ArrayList<Chat>)dataSnapshot.getValue();
-
-                    for (DataSnapshot chatSnapshot : dataSnapshot.getChildren()){
-                        Chat chat = chatSnapshot.getValue(Chat.class);
-
-                        mAllMessageList.add(chat);
-
-                        //mChattingListAdapter.notifyDataSetChanged();
-                        Log.i("aaa", String.valueOf(mAllMessageList.get(0).getAuthor()));
-                        Log.i("aaa", String.valueOf(mAllMessageList.get(0).getMessage()));
-                        Log.i("aaa", String.valueOf(mAllMessageList.get(0).getTime()));
-                        mChattingListAdapter = new ChattingListAdapter();
-                        mChattingListView.setAdapter(mChattingListAdapter);
-
-
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            });
-
-            mListenerList.add(listener);
-
-
-
-        }
-         */
-
-        Log.i("aaa","populate 4");
 
 
     }
@@ -342,16 +294,7 @@ public class PrivateMessageActivity extends AppCompatActivity {
 
                 final IdEmailPair pair = getItem(position);
 
-                /**
-                RelativeLayout layout = (RelativeLayout)convertView.findViewById(R.id.list_item_layout);
-                if (pair.isSelectFlag()==true){
-                    layout.setBackgroundColor(Color.LTGRAY);
-                }
-                else {
-                    layout.setBackgroundColor(Color.WHITE);
-                }
 
-                 */
 
                 TextView userIdView = (TextView)convertView.findViewById(R.id.userid_private);
                 userIdView.setText(pair.getEmail());
@@ -362,13 +305,6 @@ public class PrivateMessageActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         mList.remove(getItem(position));
                         mAdpter.notifyDataSetChanged();
-                        //populateList();
-
-                        //mParseObject.remove("contactList");
-                        //mParseObject.saveInBackground();
-                        //mParseUser.remove("contactList");
-                        //mParseUser.saveInBackground();
-
 
 
                     }
@@ -389,7 +325,6 @@ public class PrivateMessageActivity extends AppCompatActivity {
 
         public ChattingListAdapter() {
             super(PrivateMessageActivity.this, 0, mAllMessageList);
-            Log.i("aaa", "here11");
 
         }
 
@@ -397,29 +332,25 @@ public class PrivateMessageActivity extends AppCompatActivity {
         public View getView(final int position, View convertView, final ViewGroup parent) {
                 if (convertView==null){
                     convertView = PrivateMessageActivity.this.getLayoutInflater().inflate(R.layout.list_chatting,null);
-                    Log.i("aaa","here12");
 
                 }
 
 
                 final Chat chat = getItem(position);
-            Log.i("aaa","here13");
 
-                //TextView userIdView = (TextView)convertView.findViewById(R.id.chatting_user_name);
-                //userIdView.setText(chat.getAuthor());
 
                 TextView time = (TextView)convertView.findViewById(R.id.chatting_time);
                 time.setText(chat.getTime());
 
                 TextView text = (TextView)convertView.findViewById(R.id.chatting_text);
                 text.setText(chat.getAuthor()+": "+chat.getMessage());
-            Log.i("aaa", "here14");
 
             return convertView;
         }
     }
 
 
+    //save contact list back to parse
     @Override
     protected void onPause() {
         super.onPause();
@@ -438,15 +369,5 @@ public class PrivateMessageActivity extends AppCompatActivity {
 
     }
 
-    /**
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mChatWithPair.getEmail()!=null){
-            mFireBaseRef.child(mChatWithString).removeEventListener(mEventListener);
-
-        }
-    }
-*/
 
 }

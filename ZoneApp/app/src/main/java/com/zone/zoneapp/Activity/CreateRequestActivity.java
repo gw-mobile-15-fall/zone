@@ -16,16 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
+import com.zone.zoneapp.utils.LocationFinder;
 import com.zone.zoneapp.utils.Utils;
 
-public class CreateRequestActivity extends AppCompatActivity {
+public class CreateRequestActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
 
     public static final int MAP_REQUEST_CODE = 12314;
     public static final String TAG = "CreateRequest";
+    private static final String KEY_LOCATION = "location_index_main";
 
     private EditText mDes;
     private Button mMapLoc;
@@ -36,6 +39,8 @@ public class CreateRequestActivity extends AppCompatActivity {
     private Location mLocation;
     private String mDesciption;
     private String mTitle;
+    private String mStatusFlag;
+    private ProgressDialog mProgressDialog;
 
 
 
@@ -45,9 +50,16 @@ public class CreateRequestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_request);
 
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setTitle(R.string.loading);
+
         mTitle = "";
         mDesciption = "";
-        mLocation = null;
+        mStatusFlag = "";
+        mLocation = new Location("");
+
 
         mTit = (EditText)findViewById(R.id.request_Title_EditText);
         mDes = (EditText)findViewById(R.id.request_description_EditText);
@@ -56,6 +68,18 @@ public class CreateRequestActivity extends AppCompatActivity {
         mCreate = (Button)findViewById(R.id.create_request_Button);
         mLocationDisplay = (TextView)findViewById(R.id.text_specify_location);
 
+
+
+        //retrieve location information from bundle after rotation
+        if (savedInstanceState!=null){
+            double[] array = new double[2];
+            array = savedInstanceState.getDoubleArray(KEY_LOCATION);
+            mLocation.setLatitude(array[0]);
+            mLocation.setLongitude(array[1]);
+            mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
+        }
+
+        //populate view
         updateView();
     }
 
@@ -113,10 +137,24 @@ public class CreateRequestActivity extends AppCompatActivity {
         mMapLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreateRequestActivity.this, MapActivity.class);
-                Bundle locationData = getIntent().getExtras();
-                i.putExtras(locationData);
-                startActivityForResult(i, MAP_REQUEST_CODE);
+                mStatusFlag = "map";
+                if(mLocation.getLatitude()!=0){
+                    Intent i = new Intent(CreateRequestActivity.this, MapActivity.class);
+                    Bundle data = new Bundle();
+                    data.putDouble("currentLat",mLocation.getLatitude());
+                    data.putDouble("currentLng",mLocation.getLongitude());
+                    i.putExtras(data);
+                    startActivityForResult(i, MAP_REQUEST_CODE);
+                }
+
+                else {
+                    mProgressDialog.show();
+                    mLocation = new Location("");
+                    //Bundle locationData = getIntent().getExtras();
+                    LocationFinder locationFinder = new LocationFinder(CreateRequestActivity.this,CreateRequestActivity.this);
+                    locationFinder.detectLocationOneTime();
+                }
+
             }
         });
 
@@ -124,11 +162,12 @@ public class CreateRequestActivity extends AppCompatActivity {
         mCurrentLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mProgressDialog.show();
+                mStatusFlag = "current";
                 mLocation = new Location("");
-                Bundle locationData = getIntent().getExtras();
-                mLocation.setLatitude(locationData.getDouble("currentLat"));
-                mLocation.setLongitude(locationData.getDouble("currentLng"));
-                mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
+                //Bundle locationData = getIntent().getExtras();
+                LocationFinder locationFinder = new LocationFinder(CreateRequestActivity.this,CreateRequestActivity.this);
+                locationFinder.detectLocationOneTime();
 
             }
         });
@@ -163,10 +202,7 @@ public class CreateRequestActivity extends AppCompatActivity {
 
     //store request into parse database
     private void createPost() {
-        Log.i("aaa", "hererere");
         ParseObject parseObject = new ParseObject("Posts");
-        Log.i("aaa", "1");
-
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(mLocation.getLatitude(), mLocation.getLongitude());
         parseObject.put("postLocation", parseGeoPoint);
         parseObject.put("postText", mDesciption);
@@ -175,10 +211,12 @@ public class CreateRequestActivity extends AppCompatActivity {
         parseObject.saveInBackground();
     }
 
+
+    //wait for location result from google map
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG,"onActivityResult called");
+        Log.d(TAG, "onActivityResult called");
         if (requestCode == MAP_REQUEST_CODE){
             if (resultCode==Activity.RESULT_OK){
                 mLocation = new Location("");
@@ -206,5 +244,42 @@ public class CreateRequestActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //save location information before rotation
+        double[] array = new double[2];
+        array[0] = mLocation.getLatitude();
+        array[1] = mLocation.getLongitude();
+        outState.putDoubleArray(KEY_LOCATION, array);
+    }
+
+    @Override
+    public void locationFound(Location location) {
+
+        mProgressDialog.dismiss();
+
+        if (mStatusFlag.equals("current")){
+            mLocation = location;
+            mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
+        }
+        else if (mStatusFlag.equals("map")){
+            mLocation = location;
+            Intent i = new Intent(CreateRequestActivity.this, MapActivity.class);
+            Bundle data = new Bundle();
+            data.putDouble("currentLat",mLocation.getLatitude());
+            data.putDouble("currentLng",mLocation.getLongitude());
+            i.putExtras(data);
+            startActivityForResult(i, MAP_REQUEST_CODE);
+        }
+
+
+    }
+
+    @Override
+    public void locationNotFound(LocationFinder.FailureReason failureReason) {
+
+    }
 }
 

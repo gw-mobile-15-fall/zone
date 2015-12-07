@@ -40,27 +40,24 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     private ArrayList<ListItem> mList;
     private ListView mListView;
     private int mDistance;
+    private String mFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requests_nearby);
-
         update();
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     private void update(){
         if (!Utils.isNetworkConnected(this)){
             Toast.makeText(this,getString(R.string.no_internet_connection),Toast.LENGTH_LONG).show();
             return;
         }
+
+        //get searching radius settings from sharedPreference
         mDistance = PersistanceManager.getRadius(this);
         mLocation = null;
         mListView = (ListView) findViewById(R.id.requestsNearbyList);
@@ -68,7 +65,6 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage(this.getString(R.string.loading));
-        //populateListView();
         mProgressDialog.show();
 
         LocationFinder locationFinder = new LocationFinder(this,this);
@@ -166,7 +162,6 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     private void loadInformation(){
 
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(mLocation.getLatitude(),mLocation.getLongitude());
-
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Posts");
 
         //find all the posts within certain miles
@@ -175,17 +170,16 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 Log.i("aaa", "size:" + objects.size());
-                if (objects.size()==0){
+                if (objects.size() == 0) {
 
                     mProgressDialog.dismiss();
-                    Toast.makeText(RequestsNearbyActivity.this,RequestsNearbyActivity.this.getString(R.string.no_nearby_found),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RequestsNearbyActivity.this, RequestsNearbyActivity.this.getString(R.string.no_nearby_found), Toast.LENGTH_SHORT).show();
                     return;
-                }
-                else{
+                } else {
                     mList = new ArrayList<ListItem>();
 
-                    for (ParseObject i : objects){
-                        ListItem item = new ListItem(i.getObjectId(),i.getString("postOwner"),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
+                    for (ParseObject i : objects) {
+                        ListItem item = new ListItem(i.getObjectId(), i.getString("postOwner"), i.getCreatedAt().toString(), i.getString("postTitle"), i.getParseGeoPoint("postLocation").getLatitude(), i.getParseGeoPoint("postLocation").getLongitude(), i.getString("postText"));
                         mList.add(item);
                     }
                     mProgressDialog.dismiss();
@@ -194,5 +188,13 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
             }
         });
 
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //save location information before rotation
+        outState.putSerializable("retrieve_list", mList);
     }
 }

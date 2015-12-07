@@ -160,7 +160,6 @@ public class RequestHistoryActivity extends Activity {
                                                     object.deleteInBackground();
                                                     mList.remove(item);
                                                     mAdapter.notifyDataSetChanged();
-                                                    //loadInformation();
                                                 }
                                             }
                                         });

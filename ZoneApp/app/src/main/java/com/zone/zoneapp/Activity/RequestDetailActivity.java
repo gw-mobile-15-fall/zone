@@ -102,6 +102,7 @@ public class RequestDetailActivity extends AppCompatActivity implements OnMapRea
             }
         });
 
+        //populate map on page
         MapFragment mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.request_detail_map);
         mMapFragment.getMapAsync(this);
 
@@ -125,6 +126,7 @@ public class RequestDetailActivity extends AppCompatActivity implements OnMapRea
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
+    //get all the requests
     private void getList(){
         mList = new ArrayList<Response>();
         mAdapter = new ResponseListAdapter();
@@ -137,11 +139,15 @@ public class RequestDetailActivity extends AppCompatActivity implements OnMapRea
                     Toast.makeText(RequestDetailActivity.this,RequestDetailActivity.this.getString(R.string.can_not_add_yourself),Toast.LENGTH_SHORT).show();
                 }
                 else{
+
+                    //add user to private contact list and save it to parse
                     new AlertDialog.Builder(RequestDetailActivity.this)
                             .setTitle("Add to contact")
                             .setMessage("Add this user to your private contact list?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+
+                                    //update contact list for both current user and the selected user
                                     ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Contacts");
                                     query1.whereEqualTo("currentUser",mCurrentUesr.getEmail());
 

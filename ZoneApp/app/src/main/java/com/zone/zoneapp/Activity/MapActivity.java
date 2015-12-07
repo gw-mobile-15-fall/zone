@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -41,7 +40,7 @@ import com.zone.zoneapp.utils.Utils;
 import java.util.concurrent.ExecutionException;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener {
-    private static final LatLng GWU = new LatLng(38.90, -77.05);
+    //private static final LatLng GWU = new LatLng(38.90, -77.05);
     private LatLng mSelectedLocation;
     private Button mUseSelectedLocationButton;
     private Button mCancelButton;
@@ -51,8 +50,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private PlaceAutocompleteAdapter mAdapter;
     private AutoCompleteTextView mAutocompleteView;
     private GoogleMap mGoogleMap;
-    private TextView mPlaceDetailsText;
-    private TextView mPlaceDetailsAttribution;
+    //private TextView mPlaceDetailsText;
+    //private TextView mPlaceDetailsAttribution;
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             // from Richmond to Baltimore
             new LatLng(37.50,-77.33), new LatLng(39.18,-76.67));

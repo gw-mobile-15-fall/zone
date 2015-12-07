@@ -66,6 +66,7 @@ public class WriteResponseActivity extends AppCompatActivity {
         });
     }
 
+    //save response to parse
     private void addResponse(){
         ParseObject parseObject = new ParseObject("Responses");
         parseObject.put("userEmail", mUserEmail);

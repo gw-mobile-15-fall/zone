@@ -17,7 +17,6 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.utils.LocationFinder;
-import com.zone.zoneapp.utils.PersistanceManager;
 import com.zone.zoneapp.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
@@ -30,32 +29,32 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
     private Button mPrivate;
     private Button mLogout;
     private final String TAG = "MainActivity";
+    //private static final String KEY_LOCATION = "location_index_main";
     private Location mCurrentLocation;
     private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        Log.i(TAG, "main activity launched");
-        Log.d(TAG, "PersistanceManager set to " + PersistanceManager.getWhetherFirstTimeLaunched(this));
-        mCurrentLocation = null;
+
+
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         mUserName = currentUser.getUsername();
         mWelcomeTextView = (TextView)findViewById(R.id.welcome_user_textView);
-        mWelcomeTextView.setText("Welcome " + mUserName + " !");
+        mWelcomeTextView.setText(this.getString(R.string.welcome) + mUserName + " !");
         mCreateRequest = (Button)findViewById(R.id.create_request_Button);
         mCreateRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //check existance of location information
                 if (!checkInternet()){
                     return;
                 }
                 Intent i = new Intent(MainActivity.this, CreateRequestActivity.class);
-                Bundle data = new Bundle();
-                data.putDouble("currentLat",mCurrentLocation.getLatitude());
-                data.putDouble("currentLng",mCurrentLocation.getLongitude());
-                i.putExtras(data);
                 startActivity(i);
             }
         });
@@ -130,31 +129,28 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
                 Intent intent = new Intent(MainActivity.this,UpdateProfileActivity.class);
                 startActivity(intent);
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+
+    private void updateLocation(){
         /**
          * the following location functions are to report
          * users current location to the Parse backend
-          */
-        boolean firstTimeLaunched = PersistanceManager.getWhetherFirstTimeLaunched(this);
-        if (firstTimeLaunched){
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setMessage(this.getString(R.string.loading));
-            mProgressDialog.show();
-            LocationFinder locationFinder = new LocationFinder(this,this);
-            locationFinder.detectLocationOneTime();
-            PersistanceManager.setWhetherFirstTimeLaunched(this,false);
-        }
-
-
+         */
+        //boolean firstTimeLaunched = PersistanceManager.getWhetherFirstTimeLaunched(this);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage(this.getString(R.string.loading));
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+        LocationFinder locationFinder = new LocationFinder(this,this);
+        locationFinder.detectLocationOneTime();
     }
 
     @Override
@@ -196,6 +192,9 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         }
         return true;
     }
+
+
+
 
     @Override
     public void locationNotFound(LocationFinder.FailureReason failureReason) {

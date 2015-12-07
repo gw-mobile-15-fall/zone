@@ -21,6 +21,7 @@ public class Utils {
     private static final String TAG = "Utils";
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/details/json?key=";
     private static final String PLACE_URL = "&placeid=";
+
     public static void insertToParse(String object, HashMap<String,String> value){
         ParseObject parseObject = new ParseObject(object);
         Iterator it = value.entrySet().iterator();

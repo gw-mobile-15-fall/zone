@@ -24,17 +24,14 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
 
     private String mUserName;
     private TextView mWelcomeTextView;
-
     private Button mCreateRequest;
     private Button mNearbyRequset;
-    private Button mRequestHistory;
-    private Button mEditProfile;
+    private Button mRequestHistory;;
     private Button mPrivate;
     private Button mLogout;
     private final String TAG = "MainActivity";
     private Location mCurrentLocation;
     private ProgressDialog mProgressDialog;
-    private Boolean mFirstTimeLaunchingApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +40,10 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         Log.i(TAG, "main activity launched");
         Log.d(TAG, "PersistanceManager set to " + PersistanceManager.getWhetherFirstTimeLaunched(this));
         mCurrentLocation = null;
-        mFirstTimeLaunchingApp = true;
         ParseUser currentUser = ParseUser.getCurrentUser();
         mUserName = currentUser.getUsername();
         mWelcomeTextView = (TextView)findViewById(R.id.welcome_user_textView);
         mWelcomeTextView.setText("Welcome " + mUserName + " !");
-
-
-
         mCreateRequest = (Button)findViewById(R.id.create_request_Button);
         mCreateRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,20 +98,6 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
                 startActivity(i);
             }
         });
-        /**
-        mEditProfile = (Button)findViewById(R.id.edit_profile_Button);
-        mEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, UpdateProfileActivity.class);
-                i.putExtra(LoginActivity.EXTRA_USERNAME, mUserName);
-                startActivity(i);
-            }
-        });
-
-         */
-
-
 
         mLogout = (Button)findViewById(R.id.logout_Button);
         mLogout.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
          * users current location to the Parse backend
           */
         boolean firstTimeLaunched = PersistanceManager.getWhetherFirstTimeLaunched(this);
-        Log.d(TAG,"onResume of main activity called, the persistanceManager set to" + firstTimeLaunched);
         if (firstTimeLaunched){
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setIndeterminate(true);

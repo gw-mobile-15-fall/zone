@@ -1,4 +1,4 @@
-package com.zone.zoneapp.Activity;
+package com.zone.zoneapp.model;
 
 /**
  * @author greg
@@ -14,7 +14,7 @@ public class Chat {
     private Chat() {
     }
 
-    Chat(String message, String author, String time) {
+    public Chat(String message, String author, String time) {
         this.message = message;
         this.author = author;
         this.time = time;

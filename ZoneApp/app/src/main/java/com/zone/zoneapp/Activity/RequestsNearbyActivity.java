@@ -26,7 +26,9 @@ import com.parse.ParseQuery;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.model.ListItem;
 import com.zone.zoneapp.utils.LocationFinder;
+import com.zone.zoneapp.utils.MyListViewAdapter;
 import com.zone.zoneapp.utils.PersistanceManager;
+import com.zone.zoneapp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,10 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     }
 
     private void update(){
+        if (!Utils.isNetworkConnected(this)){
+            Toast.makeText(this,getString(R.string.no_internet_connection),Toast.LENGTH_LONG).show();
+            return;
+        }
         mDistance = PersistanceManager.getRadius(this);
         mLocation = null;
         mListView = (ListView) findViewById(R.id.requestsNearbyList);
@@ -71,17 +77,6 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
     }
 
     private void populateListView(){
-
-        //ArrayList<ListItem> array = new ArrayList<>();
-        //ListItem request1  = new ListItem("GW Hospital","01-01-15", "doctor needed");
-        //ListItem request2  = new ListItem("the White House","10-10-14", "Bodyguard needed");
-        //array.add(request1);
-        //array.add(request2);
-        //TODO During practial implementation, the populateListView Method may want to take in an ArrayList as input.
-        //eg. refresh the list==> populate using the new list.
-        //ArrayAdapter<ListItem> adapter = new MyListViewAdapter(this, R.layout.list_item,array);
-
-
         ArrayAdapter<ListItem> adapter = new MyListViewAdapter(this, R.layout.list_item, mList);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -111,11 +106,6 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        /**
-        if (id == R.id.action_settings) {
-            return true;
-        }
-         */
         if (id == R.id.refesh_button_nearby){
             update();
         }
@@ -195,25 +185,12 @@ public class RequestsNearbyActivity extends AppCompatActivity implements Locatio
                     mList = new ArrayList<ListItem>();
 
                     for (ParseObject i : objects){
-                        //ParseUser user = (ParseUser)i.get("postOwner");
-                        //String un = user.getUsername();
-
-
                         ListItem item = new ListItem(i.getObjectId(),i.getString("postOwner"),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
-
-                        //ListItem item = new ListItem(i.getObjectId(),((ParseUser)i.get("postOwner")).getUsername(),i.getCreatedAt().toString(),i.getString("postTitle"),i.getParseGeoPoint("postLocation").getLatitude(),i.getParseGeoPoint("postLocation").getLongitude(),i.getString("postText"));
                         mList.add(item);
-
-
                     }
-                    Log.i("aaa","finish");
-
                     mProgressDialog.dismiss();
                     populateListView();
                 }
-
-
-
             }
         });
 

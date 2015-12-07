@@ -91,5 +91,15 @@
     <string name="set_email_to_this_user">Do you want to send email to this user?</string>
     <string name="action_bar_update_profile_text">Update Profile</string>
     <string name="no_internet_connection">No internet connection.</string>
+    <string name="list_chatting_here_is_time">here is time</string>
+    <string name="list_private_message_time">time</string>
+    <string name="list_history_item_time">time</string>
+    <string name="activity_find_password_or">OR</string>
+    <string name="list_chatting_text">test</string>
+    <string name="content_request_detail_test">test</string>
+    <string name="list_response_here_is_time">here is time</string>
+    <string name="activity_private_message_chatting_with">Chatting with</string>
+    <string name="list_history_item_title">title</string>
+    <string name="list_response_test">test</string>
 
 </resources>

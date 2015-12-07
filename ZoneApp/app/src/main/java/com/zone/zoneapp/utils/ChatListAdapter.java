@@ -1,4 +1,4 @@
-package com.zone.zoneapp.Activity;
+package com.zone.zoneapp.utils;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.firebase.client.Query;
 import com.zone.zoneapp.R;
+import com.zone.zoneapp.model.Chat;
 
 public class ChatListAdapter extends FirebaseListAdapter<Chat> {
 

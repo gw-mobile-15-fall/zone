@@ -28,6 +28,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
+import com.zone.zoneapp.model.Chat;
 import com.zone.zoneapp.model.IdEmailPair;
 
 import java.util.ArrayList;
@@ -138,11 +139,7 @@ public class PrivateMessageActivity extends AppCompatActivity {
                         IdEmailPair pair = new IdEmailPair(s.substring(0,index+3),s.substring(index+4,s.length()),false);
                         mList.add(pair);
                     }
-                    //mList = (ArrayList)mParseObject.getList("contactList");
-                    //mList.remove(mParseUser.getEmail()+"-"+mParseUser.getObjectId());
-
                     populateList();
-
                 }
             }
         });
@@ -156,21 +153,6 @@ public class PrivateMessageActivity extends AppCompatActivity {
 
     private void populateList(){
 
-        Log.i("aaa",mList.toString());
-        //mChatList = new ArrayList<>();
-
-
-
-
-        /**
-        for (IdEmailPair i : mList){
-            if (i.isSelectFlag()){
-                chatWithString+=i.getEmail()+"; ";
-                mChatList.add(i);
-            }
-        }
-         */
-
         mAdpter = new ContactListAdapter();
         mListView.setAdapter(mAdpter);
 
@@ -179,17 +161,9 @@ public class PrivateMessageActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 IdEmailPair pair = (IdEmailPair) parent.getItemAtPosition(position);
                 mChatWithPair = pair;
-
                 mChatWithString = mParseUser.getObjectId() + "&" + mChatWithPair.getId();
-                //pair.setSelectFlag(!pair.isSelectFlag());
-                //mAdpter.notifyDataSetChanged();
                 mChatWithTextView.setText("Chatting with " + mChatWithPair.getEmail());
                 getMessage();
-
-                //populateList();
-                //Intent i = new Intent(PrivateMessageActivity.this, PrivateChattingActivity.class);
-                //i.putExtra("PRIAVATE_CHATTING_WITH",(IdEmailPair)parent.getItemAtPosition(position));
-                //startActivity(i);
             }
         });
 
@@ -220,47 +194,12 @@ public class PrivateMessageActivity extends AppCompatActivity {
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
-
-
-
-
-
-
-
-
                 return false;
             }
         });
 
-        Log.i("aaa", "here1");
         mChattingListAdapter = new ChattingListAdapter();
         mChattingListView.setAdapter(mChattingListAdapter);
-        Log.i("aaa", "here2");
-
-
-
-
-
-        /**
-        if (mChatWithPair.getEmail()!=null){
-            mChatWithString = "Chatting with "+ mChatWithPair.getEmail();
-        }
-        mChatWithTextView.setText(mChatWithString);
-
-        Log.i("aaa", "populate 1");
-        mAllMessageList = new ArrayList<>();
-        Log.i("aaa", "populate 5");
-
-        mChattingListAdapter = new ChattingListAdapter();
-        mChattingListView.setAdapter(mChattingListAdapter);
-        getMessage();
-
-        Log.i("aaa", String.valueOf(mAllMessageList.size()));
-        Log.i("aaa", mAllMessageList.toString());
-
-
-         */
-
     }
 
 
@@ -285,27 +224,9 @@ public class PrivateMessageActivity extends AppCompatActivity {
         String monthString = String.format("%02d", month);
         String dayString = String.format("%02d", day);
 
-        //String time = hour+":"+min+":"+sec+" - "+day+"/"+month+"/"+year;
-
         String time = hourString+":"+minString+":"+secString+" - "+dayString+"/"+monthString+"/"+yearString;
 
         ArrayList<String> list = new ArrayList<>();
-
-        /**
-         for (IdEmailPair pair : mChatList){
-         String id1 = mParseUser.getObjectId()+"&"+pair.getId();
-         String id2 = pair.getId()+"&"+mParseUser.getObjectId();
-         list.add(id1);
-         list.add(id2);
-         }
-
-
-
-         for (String s : list){
-         Chat chat = new Chat(mInputText.getText().toString(), mParseUser.getEmail(), time);
-         mFireBaseRef.child(s).push().setValue(chat);
-         }
-         */
 
         String fromId = mParseUser.getObjectId()+"&"+ mChatWithPair.getId();
         String toId = mChatWithPair.getId()+"&"+mParseUser.getObjectId();
@@ -317,7 +238,6 @@ public class PrivateMessageActivity extends AppCompatActivity {
 
 
         mInputText.setText("");
-        //mAllMessageList = new ArrayList<>();
     }
 
 

@@ -32,7 +32,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_below="@id/private_message_list_container"
-        android:text="Chatting with"
+        android:text="@string/activity_private_message_chatting_with"
         android:gravity="center_horizontal"
         android:textColor="#FFFFFF"
         android:textStyle="bold|italic"

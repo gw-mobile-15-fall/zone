@@ -142,7 +142,7 @@ public class FindPasswordActivity extends AppCompatActivity {
                     // user found basing on the criteria
                     // reset the password by sending email to the email address user registered with
                     try {
-                        ParseUser.requestPasswordReset(objects.get(0).getEmail().toString());
+                        ParseUser.requestPasswordReset(objects.get(0).getEmail());
                     } catch (ParseException e1) {
                         e1.printStackTrace();
                     }

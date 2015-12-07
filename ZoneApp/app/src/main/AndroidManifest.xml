@@ -117,9 +117,6 @@
             android:label="@string/title_activity_write_response"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activity.RequestDetailMapActivity"
-            android:label="@string/title_activity_request_detail_map" />
-        <activity
             android:name=".Activity.PrivateMessageActivity"
             android:label="@string/title_activity_private_message"
             android:windowSoftInputMode="stateHidden|adjustPan"

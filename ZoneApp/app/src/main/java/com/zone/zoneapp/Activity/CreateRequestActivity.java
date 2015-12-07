@@ -20,10 +20,9 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
-import com.zone.zoneapp.utils.LocationFinder;
 import com.zone.zoneapp.utils.Utils;
 
-public class CreateRequestActivity extends AppCompatActivity /*implements LocationFinder.LocationDetector*/{
+public class CreateRequestActivity extends AppCompatActivity {
 
     public static final int MAP_REQUEST_CODE = 12314;
     public static final String TAG = "CreateRequest";
@@ -34,7 +33,6 @@ public class CreateRequestActivity extends AppCompatActivity /*implements Locati
     private Button mCreate;
     private TextView mLocationDisplay;
     private EditText mTit;
-    private ProgressDialog mProgressDislog;
     private Location mLocation;
     private String mDesciption;
     private String mTitle;
@@ -50,7 +48,6 @@ public class CreateRequestActivity extends AppCompatActivity /*implements Locati
         mTitle = "";
         mDesciption = "";
         mLocation = null;
-        mProgressDislog = new ProgressDialog(this);
 
         mTit = (EditText)findViewById(R.id.request_Title_EditText);
         mDes = (EditText)findViewById(R.id.request_description_EditText);
@@ -59,13 +56,10 @@ public class CreateRequestActivity extends AppCompatActivity /*implements Locati
         mCreate = (Button)findViewById(R.id.create_request_Button);
         mLocationDisplay = (TextView)findViewById(R.id.text_specify_location);
 
-        Log.i("aaa", "mewin 1");
-        //set information to views
         updateView();
     }
 
     private void updateView() {
-        Log.i("aaa","mewin 2");
 
         //for request title field
         mTit.addTextChangedListener(new TextWatcher() {
@@ -135,12 +129,6 @@ public class CreateRequestActivity extends AppCompatActivity /*implements Locati
                 mLocation.setLatitude(locationData.getDouble("currentLat"));
                 mLocation.setLongitude(locationData.getDouble("currentLng"));
                 mLocationDisplay.setText("Latitude: " + Double.toString(mLocation.getLatitude()) + " Longitude: " + Double.toString(mLocation.getLongitude()));
-//                mProgressDislog.setIndeterminate(true);
-//                mProgressDislog.setMessage(CreateRequestActivity.this.getString(R.string.fetching_current_location));
-//                mProgressDislog.show();
-//
-//                LocationFinder locationFinder = new LocationFinder(CreateRequestActivity.this, CreateRequestActivity.this);
-//                locationFinder.detectLocationOneTime();
 
             }
         });
@@ -168,21 +156,6 @@ public class CreateRequestActivity extends AppCompatActivity /*implements Locati
         });
     }
 
-
-//    @Override
-//    public void locationFound(Location location) {
-//        Log.i("aaa","mewin 3");
-//
-//        mProgressDislog.dismiss();
-//        mLocation = location;
-//        mLocationDisplay.setText("Latitude: " + Double.toString(location.getLatitude()) + " Longitude: " + Double.toString(location.getLongitude()));
-//    }
-
-//    @Override
-//    public void locationNotFound(LocationFinder.FailureReason failureReason) {
-//        mProgressDislog.dismiss();
-//        makeToast(this.getString(R.string.location_not_found));
-//    }
 
     private void makeToast(String s){
         Toast.makeText(this,s,Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package com.zone.zoneapp.Activity;
+package com.zone.zoneapp.utils;
 
 import android.app.Activity;
 import android.util.Log;

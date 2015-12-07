@@ -1,5 +1,6 @@
 package com.zone.zoneapp.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.zone.zoneapp.R;
 import com.zone.zoneapp.utils.LocationFinder;
+import com.zone.zoneapp.utils.PersistanceManager;
 import com.zone.zoneapp.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements LocationFinder.LocationDetector{
@@ -31,18 +33,19 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
     private Button mLogout;
     private final String TAG = "MainActivity";
     private Location mCurrentLocation;
+    private ProgressDialog mProgressDialog;
+    private Boolean mFirstTimeLaunchingApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i(TAG, "main activity launched");
+        Log.d(TAG, "PersistanceManager set to " + PersistanceManager.getWhetherFirstTimeLaunched(this));
         mCurrentLocation = null;
-
+        mFirstTimeLaunchingApp = true;
         ParseUser currentUser = ParseUser.getCurrentUser();
-
         mUserName = currentUser.getUsername();
-
         mWelcomeTextView = (TextView)findViewById(R.id.welcome_user_textView);
         mWelcomeTextView.setText("Welcome " + mUserName + " !");
 
@@ -56,10 +59,10 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
                     return;
                 }
                 Intent i = new Intent(MainActivity.this, CreateRequestActivity.class);
-                //Bundle data = new Bundle();
-                //data.putDouble("currentLat",mCurrentLocation.getLatitude());
-                //data.putDouble("currentLng",mCurrentLocation.getLongitude());
-                //i.putExtras(data);
+                Bundle data = new Bundle();
+                data.putDouble("currentLat",mCurrentLocation.getLatitude());
+                data.putDouble("currentLng",mCurrentLocation.getLongitude());
+                i.putExtras(data);
                 startActivity(i);
             }
         });
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         mNearbyRequset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!checkInternet()){
+                if (!checkInternet()) {
                     return;
                 }
                 Intent i = new Intent(MainActivity.this, RequestsNearbyActivity.class);
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
             public void onClick(View v) {
                 ParseUser.logOut();
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                Intent i = new Intent(MainActivity.this,LoginActivity.class);
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
             }
         });
@@ -157,17 +160,28 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
     @Override
     protected void onResume() {
         super.onResume();
-        /*
-         the following location functions are to report
-         users current location to the Parse backend
+        /**
+         * the following location functions are to report
+         * users current location to the Parse backend
           */
-        LocationFinder locationFinder = new LocationFinder(this,this);
-        locationFinder.detectLocationOneTime();
+        boolean firstTimeLaunched = PersistanceManager.getWhetherFirstTimeLaunched(this);
+        Log.d(TAG,"onResume of main activity called, the persistanceManager set to" + firstTimeLaunched);
+        if (firstTimeLaunched){
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setMessage(this.getString(R.string.loading));
+            mProgressDialog.show();
+            LocationFinder locationFinder = new LocationFinder(this,this);
+            locationFinder.detectLocationOneTime();
+            PersistanceManager.setWhetherFirstTimeLaunched(this,false);
+        }
+
 
     }
 
     @Override
     public void locationFound(Location location) {
+        mProgressDialog.dismiss();
         Log.d(TAG, "new location found");
         /*
         when a location was found,
@@ -197,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements LocationFinder.Lo
         }
     }
 
-    private boolean  checkInternet(){
+    private boolean checkInternet(){
         if (!Utils.isNetworkConnected(this)){
             Toast.makeText(this,this.getString(R.string.no_internet_connection),Toast.LENGTH_SHORT).show();
             return false;
